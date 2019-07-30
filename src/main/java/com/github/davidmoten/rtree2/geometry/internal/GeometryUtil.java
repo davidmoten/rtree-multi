@@ -43,16 +43,15 @@ public final class GeometryUtil {
             return b;
     }
 
-    public static double distance(double x, double y, Rectangle r) {
-        return distance(x, y, r.x1(), r.y1(), r.x2(), r.y2());
+    public static double distance(double x[], Rectangle r) {
+        return distance(x, r.x(), r.y());
     }
 
-    public static double distance(double x, double y, double a1, double b1, double a2, double b2) {
-        return distance(x, y, x, y, a1, b1, a2, b2);
+    public static double distance(double[] x, double[] a, double[] b) {
+        return distance(x, x, a, b);
     }
 
-    public static double distance(double x1, double y1, double x2, double y2, double a1, double b1,
-            double a2, double b2) {
+    public static double distance(double[] x, double[] y, double[] a, double[] b) {
         if (intersects(x1, y1, x2, y2, a1, b1, a2, b2)) {
             return 0;
         }
@@ -72,9 +71,13 @@ public final class GeometryUtil {
         return Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     }
 
-    public static boolean intersects(double x1, double y1, double x2, double y2, double a1,
-            double b1, double a2, double b2) {
-        return x1 <= a2 && a1 <= x2 && y1 <= b2 && b1 <= y2;
+    public static boolean intersects(double[] mins, double[] maxes, double [] minsOther, double[] maxesOther) {
+        for (int i = 0;i < mins.length;i ++) {
+            if (mins[i] > maxesOther[i] || maxes[i] < minsOther[i]) {
+                return false;
+            }
+        }
+        return true;
     }
     
     public static boolean lineIntersects(double x1, double y1, double x2, double y2, Circle circle) {
