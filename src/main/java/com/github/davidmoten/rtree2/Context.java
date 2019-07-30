@@ -10,6 +10,7 @@ import com.github.davidmoten.rtree2.geometry.Geometry;
  */
 public final class Context<T, S extends Geometry> {
 
+    private final int dimensions;
     private final int maxChildren;
     private final int minChildren;
     private final Splitter splitter;
@@ -38,6 +39,8 @@ public final class Context<T, S extends Geometry> {
         Preconditions.checkArgument(minChildren >= 1);
         Preconditions.checkArgument(minChildren < maxChildren);
         Preconditions.checkNotNull(factory);
+        Preconditions.checkArgument(dimensions > 1);
+        this.dimensions = dimensions;
         this.selector = selector;
         this.maxChildren = maxChildren;
         this.minChildren = minChildren;
@@ -63,6 +66,10 @@ public final class Context<T, S extends Geometry> {
 
     public Factory<T, S> factory() {
         return factory;
+    }
+
+    public int dimensions() {
+        return dimensions;
     }
 
 }

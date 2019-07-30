@@ -138,11 +138,6 @@ public final class RectangleDouble implements Rectangle {
     }
 
     @Override
-    public boolean isDoublePrecision() {
-        return true;
-    }
-
-    @Override
     public double[] x() {
         return x;
     }
@@ -150,6 +145,11 @@ public final class RectangleDouble implements Rectangle {
     @Override
     public double[] y() {
         return y;
+    }
+
+    @Override
+    public int dimensions() {
+        return x.length;
     }
 
 }

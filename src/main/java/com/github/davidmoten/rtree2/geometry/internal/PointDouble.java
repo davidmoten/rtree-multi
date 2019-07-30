@@ -75,11 +75,6 @@ public final class PointDouble implements Point {
     }
 
     @Override
-    public boolean isDoublePrecision() {
-        return true;
-    }
-
-    @Override
     public int hashCode() {
         return Arrays.hashCode(x);
     }
@@ -93,6 +88,11 @@ public final class PointDouble implements Point {
         if (getClass() != obj.getClass())
             return false;
         return Arrays.equals(x, ((PointDouble) obj).x);
+    }
+
+    @Override
+    public int dimensions() {
+        return x.length;
     }
 
 }

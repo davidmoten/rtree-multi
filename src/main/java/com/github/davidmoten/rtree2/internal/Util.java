@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import com.github.davidmoten.guavamini.Preconditions;
-import com.github.davidmoten.rtree2.geometry.Geometries;
 import com.github.davidmoten.rtree2.geometry.HasGeometry;
 import com.github.davidmoten.rtree2.geometry.Rectangle;
 
@@ -42,30 +41,16 @@ public final class Util {
      */
     public static Rectangle mbr(Collection<? extends HasGeometry> items) {
         Preconditions.checkArgument(!items.isEmpty());
-        double minX1 = Double.MAX_VALUE;
-        double minY1 = Double.MAX_VALUE;
-        double maxX2 = -Double.MAX_VALUE;
-        double maxY2 = -Double.MAX_VALUE;
-        boolean isDoublePrecision = false;
+        Rectangle result = null;
         for (final HasGeometry item : items) {
             Rectangle r = item.geometry().mbr();
-            if (r.isDoublePrecision()) {
-                isDoublePrecision = true;
+            if (result == null) {
+                result = r;
+            } else {
+                result = result.add(r);
             }
-            if (r.x1() < minX1)
-                minX1 = r.x1();
-            if (r.y1() < minY1)
-                minY1 = r.y1();
-            if (r.x2() > maxX2)
-                maxX2 = r.x2();
-            if (r.y2() > maxY2)
-                maxY2 = r.y2();
         }
-        if (isDoublePrecision) {
-            return Geometries.rectangle(minX1, minY1, maxX2, maxY2);
-        } else {
-            return Geometries.rectangle((float) minX1, (float) minY1, (float) maxX2, (float) maxY2);
-        }
+        return result;
     }
 
     public static <T> List<T> add(List<T> list, T element) {

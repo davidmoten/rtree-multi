@@ -38,6 +38,7 @@ public interface Geometry {
     Rectangle mbr();
 
     boolean intersects(Rectangle r);
+    
+    int dimensions();
 
-    boolean isDoublePrecision();
 }

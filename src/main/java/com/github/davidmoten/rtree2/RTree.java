@@ -17,11 +17,8 @@ import java.util.function.Predicate;
 import com.github.davidmoten.guavamini.Lists;
 import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
-import com.github.davidmoten.rtree2.geometry.Circle;
 import com.github.davidmoten.rtree2.geometry.Geometry;
 import com.github.davidmoten.rtree2.geometry.HasGeometry;
-import com.github.davidmoten.rtree2.geometry.Intersects;
-import com.github.davidmoten.rtree2.geometry.Line;
 import com.github.davidmoten.rtree2.geometry.Point;
 import com.github.davidmoten.rtree2.geometry.Rectangle;
 import com.github.davidmoten.rtree2.internal.Comparators;
@@ -354,9 +351,10 @@ public final class RTree<T, S extends Geometry> {
          */
         @SuppressWarnings("unchecked")
         public <T, S extends Geometry> RTree<T, S> create(List<Entry<T, S>> entries) {
+            Preconditions.checkArgument(!entries.isEmpty(), "entries must not be empty");
             setDefaultCapacity();
 
-            Context<T, S> context = new Context<T, S>(minChildren.get(), maxChildren.get(), selector, splitter,
+            Context<T, S> context = new Context<T, S>(entries.get(0).geometry().dimensions(), minChildren.get(), maxChildren.get(), selector, splitter,
                     (Factory<T, S>) factory);
             return packingSTR(entries, true, entries.size(), context);
         }
@@ -416,11 +414,11 @@ public final class RTree<T, S extends Geometry> {
         }
 
         private static final class MidComparator implements Comparator<HasGeometry> {
-            private final short dimension; // leave space for multiple dimensions, 0 for x, 1 for y,
+            private final int dimension; // leave space for multiple dimensions, 0 for x, 1 for y,
                                            // ...
 
-            public MidComparator(short dim) {
-                dimension = dim;
+            public MidComparator(int dimension) {
+                this.dimension = dimension;
             }
 
             @Override
@@ -430,10 +428,7 @@ public final class RTree<T, S extends Geometry> {
 
             private double mid(HasGeometry o) {
                 Rectangle mbr = o.geometry().mbr();
-                if (dimension == 0)
-                    return (mbr.x1() + mbr.x2()) / 2;
-                else
-                    return (mbr.y1() + mbr.y2()) / 2;
+                return (mbr.x()[dimension] + mbr.y()[dimension]) / 2;
             }
         }
 
@@ -678,14 +673,6 @@ public final class RTree<T, S extends Geometry> {
         return search(p.mbr());
     }
 
-    public Iterable<Entry<T, S>> search(Circle circle) {
-        return search(circle, Intersects.geometryIntersectsCircle);
-    }
-
-    public Iterable<Entry<T, S>> search(Line line) {
-        return search(line, Intersects.geometryIntersectsLine);
-    }
-
     /**
      * Returns the intersections with the the given (arbitrary) geometry using an
      * intersection function to filter the search results returned from a search of
@@ -853,7 +840,8 @@ public final class RTree<T, S extends Geometry> {
                 r = entry.geometry().mbr();
         }
         if (r == null) {
-            return rectangle(0, 0, 0, 0);
+            double[] zero = new double[context.dimensions()];
+            return rectangle(zero, zero);
         } else {
             return r;
         }
