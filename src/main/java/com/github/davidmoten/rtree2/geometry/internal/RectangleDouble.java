@@ -90,10 +90,9 @@ public final class RectangleDouble implements Rectangle {
         if (!intersects(r))
             return 0;
         else {
-            return create(min(x, r.x()), max(y, r.y())).area();
+            return create(GeometryUtil.min(x, r.x()), GeometryUtil.max(y, r.y())).area();
         }
     }
-
 
     @Override
     public Geometry geometry() {
