@@ -52,23 +52,20 @@ public final class GeometryUtil {
     }
 
     public static double distance(double[] x, double[] y, double[] a, double[] b) {
-        if (intersects(x1, y1, x2, y2, a1, b1, a2, b2)) {
+        if (intersects(x, y, a, b)) {
             return 0;
         }
-        boolean xyMostLeft = x1 < a1;
-        double mostLeftX1 = xyMostLeft ? x1 : a1;
-        double mostRightX1 = xyMostLeft ? a1 : x1;
-        double mostLeftX2 = xyMostLeft ? x2 : a2;
-        double xDifference = max(0, mostLeftX1 == mostRightX1 ? 0 : mostRightX1 - mostLeftX2);
 
-        boolean xyMostDown = y1 < b1;
-        double mostDownY1 = xyMostDown ? y1 : b1;
-        double mostUpY1 = xyMostDown ? b1 : y1;
-        double mostDownY2 = xyMostDown ? y2 : b2;
-
-        double yDifference = max(0, mostDownY1 == mostUpY1 ? 0 : mostUpY1 - mostDownY2);
-
-        return Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+        double sum = 0;
+        for (int i = 0; i < x.length; i++) {
+            boolean xyMostLeft = x[i] < a[i];
+            double mostLeftX1 = xyMostLeft ? x[i] : a[i];
+            double mostRightX1 = xyMostLeft ? a[i] : x[i];
+            double mostLeftX2 = xyMostLeft ? y[i] : b[i];
+            double xDifference = max(0, mostLeftX1 == mostRightX1 ? 0 : mostRightX1 - mostLeftX2);
+            sum += xDifference * xDifference;
+        }
+        return Math.sqrt(sum);
     }
 
     public static boolean intersects(double[] mins, double[] maxes, double [] minsOther, double[] maxesOther) {
