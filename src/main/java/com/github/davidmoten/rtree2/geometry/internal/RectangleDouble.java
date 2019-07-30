@@ -2,7 +2,6 @@ package com.github.davidmoten.rtree2.geometry.internal;
 
 import java.util.Arrays;
 
-import com.github.davidmoten.guavamini.Objects;
 import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.rtree2.geometry.Geometry;
 import com.github.davidmoten.rtree2.geometry.Rectangle;
@@ -132,7 +131,17 @@ public final class RectangleDouble implements Rectangle {
 
     @Override
     public double perimeter() {
-        return 2 * (x2 - x1) + 2 * (y2 - y1);
+        double sum = 0;
+        for (int i = 0; i < x.length; i++) {
+            double product = 1;
+            for (int j = 0; j< x.length; j++) {
+                if (i != j) {
+                   product *= y[i] - x[i];  
+                }
+            }
+            sum+= product;
+        }
+        return 2 * sum;
     }
 
     @Override
