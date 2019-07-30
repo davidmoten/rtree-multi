@@ -1,5 +1,7 @@
 package com.github.davidmoten.rtree2.geometry.internal;
 
+import java.util.Arrays;
+
 import com.github.davidmoten.rtree2.geometry.Geometries;
 import com.github.davidmoten.rtree2.geometry.Geometry;
 import com.github.davidmoten.rtree2.geometry.Point;
@@ -7,16 +9,14 @@ import com.github.davidmoten.rtree2.geometry.Rectangle;
 
 public final class PointDouble implements Point {
 
-    private final double x;
-    private final double y;
+    private final double[] x;
 
-    private PointDouble(double x, double y) {
+    private PointDouble(double[] x) {
         this.x = x;
-        this.y = y;
     }
 
-    public static PointDouble create(double x, double y) {
-        return new PointDouble(x, y);
+    public static PointDouble create(double x[]) {
+        return new PointDouble(x);
     }
 
     @Override
@@ -26,52 +26,27 @@ public final class PointDouble implements Point {
 
     @Override
     public double distance(Rectangle r) {
-        return GeometryUtil.distance(x, y, r);
+        return GeometryUtil.distance(x, r);
     }
 
     @Override
     public boolean intersects(Rectangle r) {
-        return r.x1() <= x && x <= r.x2() && r.y1() <= y && y <= r.y2();
+        return GeometryUtil.intersects(x, x, r.x(), r.y());
     }
 
     @Override
-    public double x() {
+    public double[] x() {
         return x;
     }
 
     @Override
-    public double y() {
-        return y;
-    }
-
-    @Override
     public String toString() {
-        return "Point [x=" + x() + ", y=" + y() + "]";
+        return "Point " + Arrays.toString(x());
     }
 
     @Override
     public Geometry geometry() {
         return this;
-    }
-
-    @Override
-    public double x1() {
-        return x;
-    }
-
-    @Override
-    public double y1() {
-        return y;
-    }
-
-    @Override
-    public double x2() {
-        return x;
-    }
-
-    @Override
-    public double y2() {
-        return y;
     }
 
     @Override
@@ -81,13 +56,12 @@ public final class PointDouble implements Point {
 
     @Override
     public Rectangle add(Rectangle r) {
-        return Geometries.rectangle(Math.min(x, r.x1()), Math.min(y, r.y1()), Math.max(x, r.x2()),
-                Math.max(y, r.y2()));
+        return Geometries.rectangle(Math.min(x, r.x1()), Math.min(y, r.y1()), Math.max(x, r.x2()), Math.max(y, r.y2()));
     }
 
     @Override
-    public boolean contains(double x, double y) {
-        return this.x == x && this.y == y;
+    public boolean contains(double[] p) {
+        return Arrays.equals(x, p);
     }
 
     @Override
