@@ -94,21 +94,6 @@ public final class RectangleDouble implements Rectangle {
         }
     }
 
-    private static double[] min(double[] a, double[] b) {
-        double[] p = new double[a.length];
-        for (int i = 0; i < p.length; i++) {
-            p[i] = Math.min(a[i], b[i]);
-        }
-        return p;
-    }
-
-    private static double[] max(double[] a, double[] b) {
-        double[] p = new double[a.length];
-        for (int i = 0; i < p.length; i++) {
-            p[i] = Math.max(a[i], b[i]);
-        }
-        return p;
-    }
 
     @Override
     public Geometry geometry() {
@@ -134,12 +119,12 @@ public final class RectangleDouble implements Rectangle {
         double sum = 0;
         for (int i = 0; i < x.length; i++) {
             double product = 1;
-            for (int j = 0; j< x.length; j++) {
+            for (int j = 0; j < x.length; j++) {
                 if (i != j) {
-                   product *= y[i] - x[i];  
+                    product *= y[i] - x[i];
                 }
             }
-            sum+= product;
+            sum += product;
         }
         return 2 * sum;
     }

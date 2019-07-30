@@ -56,7 +56,7 @@ public final class PointDouble implements Point {
 
     @Override
     public Rectangle add(Rectangle r) {
-        return Geometries.rectangle(Math.min(x, r.x1()), Math.min(y, r.y1()), Math.max(x, r.x2()), Math.max(y, r.y2()));
+        return Geometries.rectangle(GeometryUtil.min(x, r.x()), GeometryUtil.max(x, r.y()));
     }
 
     @Override
@@ -81,14 +81,7 @@ public final class PointDouble implements Point {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return Arrays.hashCode(x);
     }
 
     @Override
@@ -99,12 +92,7 @@ public final class PointDouble implements Point {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        PointDouble other = (PointDouble) obj;
-        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-            return false;
-        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-            return false;
-        return true;
+        return Arrays.equals(x, ((PointDouble) obj).x);
     }
 
 }
