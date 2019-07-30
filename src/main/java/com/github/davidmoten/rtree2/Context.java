@@ -30,7 +30,7 @@ public final class Context<T, S extends Geometry> {
      * @param factory
      *            node creation factory
      */
-    public Context(int minChildren, int maxChildren, Selector selector, Splitter splitter,
+    public Context(int dimensions, int minChildren, int maxChildren, Selector selector, Splitter splitter,
             Factory<T, S> factory) {
         Preconditions.checkNotNull(splitter);
         Preconditions.checkNotNull(selector);

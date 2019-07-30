@@ -7,50 +7,44 @@ import com.github.davidmoten.rtree2.geometry.Rectangle;
 import com.github.davidmoten.rtree2.internal.util.ObjectsHelper;
 
 public final class RectangleDouble implements Rectangle {
-    private final double x1, y1, x2, y2;
 
-    private RectangleDouble(double x1, double y1, double x2, double y2) {
-        Preconditions.checkArgument(x2 >= x1);
-        Preconditions.checkArgument(y2 >= y1);
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+    private final double[] x;
+    private final double[] y;
+
+    private RectangleDouble(double[] x, double y[]) {
+        Preconditions.checkArgument(x.length == y.length);
+        for (int i = 0; i < x.length; i++) {
+            Preconditions.checkArgument(y[i] >= x[i]);
+        }
+        this.x = x;
+        this.y = y;
     }
 
     public static RectangleDouble create(double x1, double y1, double x2, double y2) {
-        return new RectangleDouble(x1, y1, x2, y2);
-    }
-
-    @Override
-    public double x1() {
-        return x1;
-    }
-
-    @Override
-    public double y1() {
-        return y1;
-    }
-
-    @Override
-    public double x2() {
-        return x2;
-    }
-
-    @Override
-    public double y2() {
-        return  y2;
+        return new RectangleDouble(new double[] { x1, y1 }, new double[] { x2, y2 });
     }
 
     @Override
     public Rectangle add(Rectangle r) {
-        return new RectangleDouble(min(x1, r.x1()), min(y1, r.y1()), max(x2, r.x2()),
-                max(y2, r.y2()));
+        double[] a = new double[x.length];
+        double[] b = new double[x.length];
+        for (int i = 0; i < a.length; i++) {
+            //TODO minor perf improvement - use if
+            a[i] = min(x[i], r.x()[i]);
+            b[i] = max(x[i], r.x()[i]);
+        }
+        return new RectangleDouble(a, b);
     }
 
     @Override
-    public boolean contains(double x, double y) {
-        return x >= x1 && x <= x2 && y >= y1 && y <= y2;
+    public boolean contains(double[] p) {
+        Preconditions.checkArgument(x.length == p.length);
+        for (int i = 0; i < p.length; i++) {
+            if (p[i] < x[i] || p[i] > y[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -82,8 +76,8 @@ public final class RectangleDouble implements Rectangle {
     public boolean equals(Object obj) {
         RectangleDouble other = ObjectsHelper.asClass(obj, RectangleDouble.class);
         if (other != null) {
-            return Objects.equal(x1, other.x1) && Objects.equal(x2, other.x2)
-                    && Objects.equal(y1, other.y1) && Objects.equal(y2, other.y2);
+            return Objects.equal(x1, other.x1) && Objects.equal(x2, other.x2) && Objects.equal(y1, other.y1)
+                    && Objects.equal(y2, other.y2);
         } else
             return false;
     }
@@ -93,8 +87,7 @@ public final class RectangleDouble implements Rectangle {
         if (!intersects(r))
             return 0;
         else {
-            return create(max(x1, r.x1()), max(y1, r.y1()), min(x2, r.x2()), min(y2, r.y2()))
-                    .area();
+            return create(max(x1, r.x1()), max(y1, r.y1()), min(x2, r.x2()), min(y2, r.y2())).area();
         }
     }
 
@@ -131,5 +124,16 @@ public final class RectangleDouble implements Rectangle {
     public boolean isDoublePrecision() {
         return true;
     }
+
+    @Override
+    public double[] x() {
+        return x;
+    }
+
+    @Override
+    public double[] y() {
+        return y;
+    }
+
 
 }

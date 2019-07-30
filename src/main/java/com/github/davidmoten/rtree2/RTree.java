@@ -15,6 +15,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import com.github.davidmoten.guavamini.Lists;
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.guavamini.annotations.VisibleForTesting;
 import com.github.davidmoten.rtree2.geometry.Circle;
 import com.github.davidmoten.rtree2.geometry.Geometry;
@@ -224,9 +225,16 @@ public final class RTree<T, S extends Geometry> {
         private double loadingFactor;
         private boolean star = false;
         private Factory<Object, Geometry> factory = Factories.defaultFactory();
+        private int dimensions = 2;
 
         private Builder() {
             loadingFactor = DEFAULT_LOADING_FACTOR;
+        }
+        
+        public Builder dimensions(int dimensions) {
+            Preconditions.checkArgument(dimensions >= 2, "dimensions must be 2 or more");
+            this.dimensions = dimensions;
+            return this;
         }
 
         /**
@@ -327,7 +335,7 @@ public final class RTree<T, S extends Geometry> {
         public <T, S extends Geometry> RTree<T, S> create() {
             setDefaultCapacity();
 
-            return new RTree<T, S>(Optional.<Node<T, S>>empty(), 0, new Context<T, S>(minChildren.get(),
+            return new RTree<T, S>(Optional.<Node<T, S>>empty(), 0, new Context<T, S>(dimensions, minChildren.get(),
                     maxChildren.get(), selector, splitter, (Factory<T, S>) factory));
         }
 
