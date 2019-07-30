@@ -1,13 +1,13 @@
-rtree2
+rtree-multi
 =========
-[![Travis CI](https://travis-ci.org/davidmoten/rtree2.svg)](https://travis-ci.org/davidmoten/rtree2)<br/>
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/rtree2/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/rtree2)<br/>
-[![codecov](https://codecov.io/gh/davidmoten/rtree2/branch/master/graph/badge.svg)](https://codecov.io/gh/davidmoten/rtree2)
+[![Travis CI](https://travis-ci.org/davidmoten/rtree-multi.svg)](https://travis-ci.org/davidmoten/rtree-multi)<br/>
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/rtree-multi/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/rtree-multi)<br/>
+[![codecov](https://codecov.io/gh/davidmoten/rtree-multi/branch/master/graph/badge.svg)](https://codecov.io/gh/davidmoten/rtree-multi)
 
 
-In-memory immutable 2D [R-tree](http://en.wikipedia.org/wiki/R-tree) implementation. This is the next version of [rtree](https://github.com/davidmoten/rtree) and differs in that it does not have a reactive API (returns `Iterable` from searches) and does not support serialization directly. If you want a reactive API then wrap then all the major reactive libraries can wrap `Iterable`s. 
+In-memory immutable [R-tree](http://en.wikipedia.org/wiki/R-tree) implementation for n dimensions. 
 
-Status: *released to Maven Central*
+Status: *in development*
 
 An [R-tree](http://en.wikipedia.org/wiki/R-tree) is a commonly used spatial index.
 
@@ -15,25 +15,25 @@ This was fun to make, has an elegant concise algorithm, is thread-safe, fast, an
 
 The algorithm to achieve immutability is cute. For insertion/deletion it involves recursion down to the 
 required leaf node then recursion back up to replace the parent nodes up to the root. The guts of 
-it is in [Leaf.java](src/main/java/com/github/davidmoten/rtree2/internal/LeafDefault.java) and [NonLeaf.java](src/main/java/com/github/davidmoten/rtree2/internal/NonLeafDefault.java).
+it is in [Leaf.java](src/main/java/com/github/davidmoten/rtree-multi/internal/LeafDefault.java) and [NonLeaf.java](src/main/java/com/github/davidmoten/rtree-multi/internal/NonLeafDefault.java).
 
 Iterator support requires a bookmark to be kept for a position in the tree and returned to later to continue traversal. An immutable stack containing the node and child index of the path nodes came to the rescue here and recursion was abandoned in favour of looping to prevent stack overflow (unfortunately java doesn't support tail recursion!).
 
-Maven site reports are [here](http://davidmoten.github.io/rtree2/index.html) including [javadoc](http://davidmoten.github.io/rtree2/apidocs/index.html).
+Maven site reports are [here](http://davidmoten.github.io/rtree-multi/index.html) including [javadoc](http://davidmoten.github.io/rtree-multi/apidocs/index.html).
 
 Features
 ------------
 * immutable R-tree suitable for concurrency
 * Guttman's heuristics (Quadratic splitter) ([paper](https://www.google.com.au/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0CB8QFjAA&url=http%3A%2F%2Fpostgis.org%2Fsupport%2Frtree.pdf&ei=ieEQVJuKGdK8uATpgoKQCg&usg=AFQjCNED9w2KjgiAa9UI-UO_0eWjcADTng&sig2=rZ_dzKHBHY62BlkBuw3oCw&bvm=bv.74894050,d.c2E))
 * R*-tree heuristics ([paper](http://dbs.mathematik.uni-marburg.de/publications/myPapers/1990/BKSS90.pdf))
-* Customizable [splitter](src/main/java/com/github/davidmoten/rtree2/Splitter.java) and [selector](src/main/java/com/github/davidmoten/rtree2/Selector.java)
+* Customizable [splitter](src/main/java/com/github/davidmoten/rtree-multi/Splitter.java) and [selector](src/main/java/com/github/davidmoten/rtree-multi/Selector.java)
 * search is ```O(log(n))``` on average
 * insert, delete are ```O(n)``` worst case
 * balanced delete
 * uses structural sharing
 * JMH benchmarks
 * visualizer included
-* decent unit test [code coverage](http://davidmoten.github.io/rtree2/cobertura/index.html) 
+* decent unit test [code coverage](http://davidmoten.github.io/rtree-multi/cobertura/index.html) 
 * R*-tree performs 900,000 searches/second returning 22 entries from a tree of 38,377 Greek earthquake locations on i7-920@2.67Ghz (maxChildren=4, minChildren=1). Insert at 240,000 entries per second.
 * requires java 1.8 or later
 
@@ -53,7 +53,7 @@ Add this maven dependency to your pom.xml:
 ```xml
 <dependency>
   <groupId>com.github.davidmoten</groupId>
-  <artifactId>rtree2</artifactId>
+  <artifactId>rtree-multi</artifactId>
   <version>VERSION_HERE</version>
 </dependency>
 ```
@@ -202,8 +202,8 @@ entries = tree.search(polygon, 10, distancePointToPolygon);
 Example
 --------------
 ```java
-import com.github.davidmoten.rtree2.RTree;
-import static com.github.davidmoten.rtree2.geometry.Geometries.*;
+import com.github.davidmoten.rtree-multi.RTree;
+import static com.github.davidmoten.rtree-multi.geometry.Geometries.*;
 
 RTree<String, Point> tree = RTree.maxChildren(5).create();
 tree = tree.add("DAVE", point(10, 20))
@@ -216,11 +216,11 @@ Iterable<Entry<String, Point>> entries =
 
 Searching by distance on lat longs
 ------------------------------------
-See [LatLongExampleTest.java](src/test/java/com/github/davidmoten/rtree2/LatLongExampleTest.java) for an example. The example depends on [*grumpy-core*](https://github.com/davidmoten/grumpy) artifact which is also on Maven Central.
+See [LatLongExampleTest.java](src/test/java/com/github/davidmoten/rtree-multi/LatLongExampleTest.java) for an example. The example depends on [*grumpy-core*](https://github.com/davidmoten/grumpy) artifact which is also on Maven Central.
 
 Another lat long example searching geo circles 
 ------------------------------------------------
-See [LatLongExampleTest.testSearchLatLongCircles()](src/test/java/com/github/davidmoten/rtree2/LatLongExampleTest.java) for an example of searching circles around geographic points (using great circle distance).
+See [LatLongExampleTest.testSearchLatLongCircles()](src/test/java/com/github/davidmoten/rtree-multi/LatLongExampleTest.java) for an example of searching circles around geographic points (using great circle distance).
 
 How to configure the R-tree for best performance
 --------------------------------------------------
@@ -271,7 +271,7 @@ mbr=Rectangle [x1=10.0, y1=4.0, x2=62.0, y2=85.0]
 
 Serialization
 ------------------
-Serialization is not supported directly in *rtree2*. Your best bet is to serialize entries from and `RTree` as you like (just the entries) and then use bulk loading when deserializing. Bulk loading is performed like this:
+Serialization is not supported directly in *rtree-multi*. Your best bet is to serialize entries from and `RTree` as you like (just the entries) and then use bulk loading when deserializing. Bulk loading is performed like this:
 
 ```java
 // deserialize the entries from disk (for example)
@@ -283,8 +283,8 @@ RTree<Thing, Point> tree = RTree.maxChildren(28).star().create(entries);
 How to build
 ----------------
 ```
-git clone https://github.com/davidmoten/rtree2.git
-cd rtree2
+git clone https://github.com/davidmoten/rtree-multi.git
+cd rtree-multi
 mvn clean install
 ```
 
