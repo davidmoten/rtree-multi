@@ -51,6 +51,7 @@ public final class GeometryUtil {
         return distance(x, x, a, b);
     }
 
+    // distance between two rectangles
     public static double distance(double[] x, double[] y, double[] a, double[] b) {
         if (intersects(x, y, a, b)) {
             return 0;
