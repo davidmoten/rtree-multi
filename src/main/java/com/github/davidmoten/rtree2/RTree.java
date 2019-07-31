@@ -100,7 +100,7 @@ public final class RTree<T, S extends Geometry> {
      *            the geometry type of the entries in the tree
      * @return a new RTree instance
      */
-    public static <T, S extends Geometry> RTree<T, S> create() {
+    public static <T, S extends Geometry> RTree<T, S> create(int dimensions) {
         return new Builder().create();
     }
 
@@ -941,6 +941,10 @@ public final class RTree<T, S extends Geometry> {
             }
         }
         return s.toString();
+    }
+
+    public int dimensions() {
+        return context.dimensions();
     }
 
 }

@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.rtree2.geometry.Geometry;
 import com.github.davidmoten.rtree2.geometry.Rectangle;
 
@@ -24,6 +25,7 @@ public final class Visualizer {
     private final int maxDepth;
 
     Visualizer(RTree<?, Geometry> tree, int width, int height, Rectangle view) {
+        Preconditions.checkArgument(tree.dimensions() == 2, "visualizer only supported for 2 dimensions");
         this.tree = tree;
         this.width = width;
         this.height = height;
@@ -102,10 +104,11 @@ public final class Visualizer {
     }
 
     private void drawRectangle(Graphics2D g, Rectangle r) {
-        final double x1 = (r.x1() - view.x1()) / (view.x2() - view.x1()) * width;
-        final double y1 = (r.y1() - view.y1()) / (view.y2() - view.y1()) * height;
-        final double x2 = (r.x2() - view.x1()) / (view.x2() - view.x1()) * width;
-        final double y2 = (r.y2() - view.y1()) / (view.y2() - view.y1()) * height;
+        // x1 == x(0), x2 = y(0), y1 = x(1), y2 = y(1)
+        final double x1 = (r.x(0) - view.x(0)) / (view.y(0) - view.x(0)) * width;
+        final double y1 = (r.x(1) - view.x(1)) / (view.y(1) - view.x(1)) * height;
+        final double x2 = (r.y(0) - view.x(0)) / (view.y(0) - view.x(0)) * width;
+        final double y2 = (r.y(1) - view.x(1)) / (view.y(1) - view.x(1)) * height;
         g.drawRect(rnd(x1), rnd(y1), Math.max(rnd(x2 - x1), 1), Math.max(rnd(y2 - y1), 1));
     }
 
