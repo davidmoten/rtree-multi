@@ -60,7 +60,7 @@ public final class PointDouble implements Point {
     }
 
     @Override
-    public boolean contains(double[] p) {
+    public boolean contains(double... p) {
         return Arrays.equals(x, p);
     }
 

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 public class PointTest {
@@ -74,7 +76,7 @@ public class PointTest {
 	@Test
 	public void testHashCode() {
 		Point p = Geometries.point(1, 2);
-		assertEquals(-260045887, p.hashCode());
+		assertEquals(Arrays.hashCode(new double[] {1,2}), p.hashCode());
 	}
 
 	@Test
