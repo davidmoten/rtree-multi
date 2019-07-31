@@ -430,7 +430,7 @@ public final class RTree<T, S extends Geometry> {
 
             private double mid(HasGeometry o) {
                 Rectangle mbr = o.geometry().mbr();
-                return (mbr.x()[dimension] + mbr.y()[dimension]) / 2;
+                return (mbr.mins()[dimension] + mbr.maxes()[dimension]) / 2;
             }
         }
 

@@ -9,39 +9,39 @@ import com.github.davidmoten.rtree2.internal.util.ObjectsHelper;
 
 public final class RectangleDouble implements Rectangle {
 
-    private final double[] x;
-    private final double[] y;
+    private final double[] mins;
+    private final double[] maxes;
 
-    private RectangleDouble(double[] x, double y[]) {
-        Preconditions.checkArgument(x.length == y.length);
-        for (int i = 0; i < x.length; i++) {
-            Preconditions.checkArgument(y[i] >= x[i]);
+    private RectangleDouble(double[] mins, double[] maxes) {
+        Preconditions.checkArgument(mins.length == maxes.length);
+        for (int i = 0; i < mins.length; i++) {
+            Preconditions.checkArgument(maxes[i] >= mins[i]);
         }
-        this.x = x;
-        this.y = y;
+        this.mins = mins;
+        this.maxes = maxes;
     }
 
-    public static RectangleDouble create(double x[], double[] y) {
-        return new RectangleDouble(x, y);
+    public static RectangleDouble create(double[] mins, double[] maxes) {
+        return new RectangleDouble(mins, maxes);
     }
 
     @Override
     public Rectangle add(Rectangle r) {
-        double[] a = new double[x.length];
-        double[] b = new double[x.length];
+        double[] a = new double[mins.length];
+        double[] b = new double[mins.length];
         for (int i = 0; i < a.length; i++) {
             // TODO minor perf improvement - use if
-            a[i] = min(x[i], r.x()[i]);
-            b[i] = max(x[i], r.x()[i]);
+            a[i] = min(mins[i], r.mins()[i]);
+            b[i] = max(mins[i], r.mins()[i]);
         }
         return new RectangleDouble(a, b);
     }
 
     @Override
-    public boolean contains(double[] p) {
-        Preconditions.checkArgument(x.length == p.length);
+    public boolean contains(double... p) {
+        Preconditions.checkArgument(mins.length == p.length);
         for (int i = 0; i < p.length; i++) {
-            if (p[i] < x[i] || p[i] > y[i]) {
+            if (p[i] < mins[i] || p[i] > maxes[i]) {
                 return false;
             }
         }
@@ -50,12 +50,12 @@ public final class RectangleDouble implements Rectangle {
 
     @Override
     public boolean intersects(Rectangle r) {
-        return GeometryUtil.intersects(x, y, r.x(), r.y());
+        return GeometryUtil.intersects(mins, maxes, r.mins(), r.maxes());
     }
 
     @Override
     public double distance(Rectangle r) {
-        return GeometryUtil.distance(x, y, r.x(), r.y());
+        return GeometryUtil.distance(mins, maxes, r.mins(), r.maxes());
     }
 
     @Override
@@ -65,14 +65,14 @@ public final class RectangleDouble implements Rectangle {
 
     @Override
     public String toString() {
-        return "Rectangle [x=" + Arrays.toString(x) + ", y=" + Arrays.toString(y) + "]";
+        return "Rectangle [x=" + Arrays.toString(mins) + ", y=" + Arrays.toString(maxes) + "]";
     }
 
     @Override
     public int hashCode() {
         int result = 1;
-        result = 31 * result + (x == null ? 0 : Arrays.hashCode(x));
-        result = 31 * result + (y == null ? 0 : Arrays.hashCode(y));
+        result = 31 * result + (mins == null ? 0 : Arrays.hashCode(mins));
+        result = 31 * result + (maxes == null ? 0 : Arrays.hashCode(maxes));
         return result;
     }
 
@@ -80,7 +80,7 @@ public final class RectangleDouble implements Rectangle {
     public boolean equals(Object obj) {
         RectangleDouble other = ObjectsHelper.asClass(obj, RectangleDouble.class);
         if (other != null) {
-            return Arrays.equals(x, other.x) && Arrays.equals(y, other.y);
+            return Arrays.equals(mins, other.mins) && Arrays.equals(maxes, other.maxes);
         } else
             return false;
     }
@@ -90,7 +90,7 @@ public final class RectangleDouble implements Rectangle {
         if (!intersects(r))
             return 0;
         else {
-            return create(GeometryUtil.max(x, r.x()), GeometryUtil.min(y, r.y())).area();
+            return create(GeometryUtil.max(mins, r.mins()), GeometryUtil.min(maxes, r.maxes())).area();
         }
     }
 
@@ -116,11 +116,11 @@ public final class RectangleDouble implements Rectangle {
     @Override
     public double perimeter() {
         double sum = 0;
-        for (int i = 0; i < x.length; i++) {
+        for (int i = 0; i < mins.length; i++) {
             double product = 1;
-            for (int j = 0; j < x.length; j++) {
+            for (int j = 0; j < mins.length; j++) {
                 if (i != j) {
-                    product *= y[i] - x[i];
+                    product *= maxes[i] - mins[i];
                 }
             }
             sum += product;
@@ -131,25 +131,25 @@ public final class RectangleDouble implements Rectangle {
     @Override
     public double area() {
         double v = 1;
-        for (int i = 0; i < x.length; i++) {
-            v *= y[i] - x[i];
+        for (int i = 0; i < mins.length; i++) {
+            v *= maxes[i] - mins[i];
         }
         return v;
     }
 
     @Override
-    public double[] x() {
-        return x;
+    public double[] mins() {
+        return mins;
     }
 
     @Override
-    public double[] y() {
-        return y;
+    public double[] maxes() {
+        return maxes;
     }
 
     @Override
     public int dimensions() {
-        return x.length;
+        return mins.length;
     }
 
 }

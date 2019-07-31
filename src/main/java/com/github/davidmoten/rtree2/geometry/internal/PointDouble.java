@@ -31,17 +31,17 @@ public final class PointDouble implements Point {
 
     @Override
     public boolean intersects(Rectangle r) {
-        return GeometryUtil.intersects(x, x, r.x(), r.y());
+        return GeometryUtil.intersects(x, x, r.mins(), r.maxes());
     }
 
     @Override
-    public double[] x() {
+    public double[] mins() {
         return x;
     }
 
     @Override
     public String toString() {
-        return "Point " + Arrays.toString(x());
+        return "Point " + Arrays.toString(mins());
     }
 
     @Override
@@ -56,7 +56,7 @@ public final class PointDouble implements Point {
 
     @Override
     public Rectangle add(Rectangle r) {
-        return Geometries.rectangle(GeometryUtil.min(x, r.x()), GeometryUtil.max(x, r.y()));
+        return Geometries.rectangle(GeometryUtil.min(x, r.mins()), GeometryUtil.max(x, r.maxes()));
     }
 
     @Override

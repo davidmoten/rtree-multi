@@ -406,13 +406,13 @@ public class RTreeTest {
         List<Entry<Object, Rectangle>> list = Iterables.toList(tree.nearest(r(9), 10, 2));
         assertEquals(2, list.size());
         System.out.println(list);
-        assertEquals(10, list.get(0).geometry().mbr().x(0), PRECISION);
-        assertEquals(11, list.get(1).geometry().mbr().x(0), PRECISION);
+        assertEquals(10, list.get(0).geometry().mbr().min(0), PRECISION);
+        assertEquals(11, list.get(1).geometry().mbr().min(0), PRECISION);
 
         List<Entry<Object, Rectangle>> list2 = Iterables.toList(tree.nearest(r(10), 8, 3));
         assertEquals(2, list2.size());
-        assertEquals(10, list2.get(1).geometry().mbr().x(0), PRECISION);
-        assertEquals(11, list2.get(0).geometry().mbr().x(0), PRECISION);
+        assertEquals(10, list2.get(1).geometry().mbr().min(0), PRECISION);
+        assertEquals(11, list2.get(0).geometry().mbr().min(0), PRECISION);
     }
 
     @Test
@@ -420,8 +420,8 @@ public class RTreeTest {
         RTree<Object, Geometry> tree = RTree.maxChildren(4).create().add(e(1)).add(e(2)).add(e(3)).add(e(9)).add(e(10));
         List<Entry<Object, Geometry>> list = Iterables.toList(tree.nearest(r(6), 10, 2));
         assertEquals(2, list.size());
-        assertEquals(3, list.get(0).geometry().mbr().x(0), PRECISION);
-        assertEquals(9, list.get(1).geometry().mbr().x(0), PRECISION);
+        assertEquals(3, list.get(0).geometry().mbr().min(0), PRECISION);
+        assertEquals(9, list.get(1).geometry().mbr().min(0), PRECISION);
     }
 
     @Test
@@ -589,7 +589,7 @@ public class RTreeTest {
         RTree<Integer, Geometry> tree = RTree.create();
         for (int i = 0; i < points.length; i++) {
             Point point = points[i];
-            System.out.println("point(" + point.x() + "," + point.y() + "), value=" + (i + 1));
+            System.out.println("point(" + point.mins() + "," + point.maxes() + "), value=" + (i + 1));
             tree = tree.add(i + 1, point);
         }
         System.out.println(tree.asString());
@@ -608,7 +608,7 @@ public class RTreeTest {
         RTree<Integer, Geometry> tree = RTree.create();
         for (int i = 0; i < points.length; i++) {
             Point point = points[i];
-            System.out.println("point(" + point.x() + "," + point.y() + "), value=" + (i + 1));
+            System.out.println("point(" + point.mins() + "," + point.maxes() + "), value=" + (i + 1));
             tree = tree.add(i + 1, point);
         }
         System.out.println(tree.asString());
@@ -649,7 +649,7 @@ public class RTreeTest {
                     Observable.from(tree2.search(r)).map(RTreeTest.<Integer>toValue()).toList().toBlocking().single());
             Set<Integer> res3 = new HashSet<Integer>(
                     Observable.from(tree3.search(r)).map(RTreeTest.<Integer>toValue()).toList().toBlocking().single());
-            System.out.println("searchRect= rectangle(" + r.x(0) + "," + r.x(1) + "," + r.y(0) + "," + r.y(1) + ")");
+            System.out.println("searchRect= rectangle(" + r.min(0) + "," + r.min(1) + "," + r.max(0) + "," + r.max(1) + ")");
             System.out.println("res1.size=" + res1.size() + ",res2.size=" + res2.size() + ",res3.size=" + res3.size());
             // System.out.println("res1=" + res1 + ",res2=" + res2 + ",res3=" + res3);
             assertEquals(res1.size(), res2.size());
@@ -743,6 +743,7 @@ public class RTreeTest {
     public void testSearchGreekEarthquakesDouble() {
         Iterable<Entry<Object, Point>> entriesDouble = GreekEarthquakes.entries(Precision.DOUBLE);
         RTree<Object, Point> t = RTree.maxChildren(4).<Object, Point>create().add(entriesDouble); //
+        assertEquals(38377, Iterables.size(t.entries()));
         Observable.from(t.search(Geometries.rectangle(40, 27.0, 40.5, 27.5))) //
                 .test() //
                 .assertValueCount(22) //

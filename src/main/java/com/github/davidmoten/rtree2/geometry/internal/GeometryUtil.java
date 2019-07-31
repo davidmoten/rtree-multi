@@ -1,5 +1,6 @@
 package com.github.davidmoten.rtree2.geometry.internal;
 
+import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.rtree2.geometry.Rectangle;
 
 public final class GeometryUtil {
@@ -43,7 +44,7 @@ public final class GeometryUtil {
     }
 
     public static double distance(double x[], Rectangle r) {
-        return distance(x, r.x(), r.y());
+        return distance(x, r.mins(), r.maxes());
     }
 
     public static double distance(double[] x, double[] a, double[] b) {
@@ -70,6 +71,9 @@ public final class GeometryUtil {
 
     public static boolean intersects(double[] mins, double[] maxes, double [] minsOther, double[] maxesOther) {
         for (int i = 0;i < mins.length;i ++) {
+            //TODO remove for perf
+            Preconditions.checkArgument(mins[i] <= maxes[i]);
+            Preconditions.checkArgument(minsOther[i] <= maxesOther[i]);
             if (mins[i] > maxesOther[i] || maxes[i] < minsOther[i]) {
                 return false;
             }

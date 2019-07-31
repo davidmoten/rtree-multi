@@ -105,10 +105,10 @@ public final class Visualizer {
 
     private void drawRectangle(Graphics2D g, Rectangle r) {
         // x1 == x(0), x2 = y(0), y1 = x(1), y2 = y(1)
-        final double x1 = (r.x(0) - view.x(0)) / (view.y(0) - view.x(0)) * width;
-        final double y1 = (r.x(1) - view.x(1)) / (view.y(1) - view.x(1)) * height;
-        final double x2 = (r.y(0) - view.x(0)) / (view.y(0) - view.x(0)) * width;
-        final double y2 = (r.y(1) - view.x(1)) / (view.y(1) - view.x(1)) * height;
+        final double x1 = (r.min(0) - view.min(0)) / (view.max(0) - view.min(0)) * width;
+        final double y1 = (r.min(1) - view.min(1)) / (view.max(1) - view.min(1)) * height;
+        final double x2 = (r.max(0) - view.min(0)) / (view.max(0) - view.min(0)) * width;
+        final double y2 = (r.max(1) - view.min(1)) / (view.max(1) - view.min(1)) * height;
         g.drawRect(rnd(x1), rnd(y1), Math.max(rnd(x2 - x1), 1), Math.max(rnd(y2 - y1), 1));
     }
 
