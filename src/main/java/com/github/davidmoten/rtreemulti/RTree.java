@@ -638,7 +638,6 @@ public final class RTree<T, S extends Geometry> {
         return new Predicate<Geometry>() {
             @Override
             public boolean test(Geometry g) {
-                System.out.println(g);
                 return g.intersects(r);
             }
         };
