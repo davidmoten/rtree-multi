@@ -221,7 +221,7 @@ public final class RTree<T, S extends Geometry> {
         private Optional<Integer> maxChildren = empty();
         private Optional<Integer> minChildren = empty();
         private Splitter splitter = new SplitterQuadratic();
-        private Selector selector = new SelectorMinimalAreaIncrease();
+        private Selector selector = new SelectorMinimalVolumeIncrease();
         private double loadingFactor;
         private boolean star = false;
         private Factory<Object, Geometry> factory = Factories.defaultFactory();

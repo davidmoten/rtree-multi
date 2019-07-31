@@ -86,7 +86,7 @@ public final class RectangleDouble implements Rectangle {
     }
 
     @Override
-    public double intersectionArea(Rectangle r) {
+    public double intersectionVolume(Rectangle r) {
         if (!intersects(r))
             return 0;
         else {

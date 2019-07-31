@@ -19,10 +19,10 @@ public final class SplitterRStar implements Splitter {
 
             @Override
             public int compare(ListPair<?> p1, ListPair<?> p2) {
-                // check overlap first then areaSum
+                // check overlap first then volumeSum
                 int value = Double.compare(overlap(p1), overlap(p2));
                 if (value == 0) {
-                    return Double.compare(p1.areaSum(), p2.areaSum());
+                    return Double.compare(p1.volumeSum(), p2.volumeSum());
                 } else {
                     return value;
                 }
@@ -94,7 +94,7 @@ public final class SplitterRStar implements Splitter {
     }
 
     private static double overlap(ListPair<? extends HasGeometry> pair) {
-        return pair.group1().geometry().mbr().intersectionArea(pair.group2().geometry().mbr());
+        return pair.group1().geometry().mbr().intersectionVolume(pair.group2().geometry().mbr());
     }
 
 }

@@ -21,17 +21,17 @@ public final class Comparators {
         // prevent instantiation
     }
 
-    public static <T extends HasGeometry> Comparator<HasGeometry> overlapAreaThenAreaIncreaseThenAreaComparator(
+    public static <T extends HasGeometry> Comparator<HasGeometry> overlapVolumeThenVolumeIncreaseThenVolumeComparator(
             final Rectangle r, final List<T> list) {
         return new Comparator<HasGeometry>() {
 
             @Override
             public int compare(HasGeometry g1, HasGeometry g2) {
-                int value = Double.compare(overlapArea(r, list, g1), overlapArea(r, list, g2));
+                int value = Double.compare(overlapVolume(r, list, g1), overlapVolume(r, list, g2));
                 if (value == 0) {
-                    value = Double.compare(areaIncrease(r, g1), areaIncrease(r, g2));
+                    value = Double.compare(volumeIncrease(r, g1), volumeIncrease(r, g2));
                     if (value == 0) {
-                        value = Double.compare(area(r, g1), area(r, g2));
+                        value = Double.compare(volume(r, g1), volume(r, g2));
                     }
                 }
                 return value;
@@ -39,36 +39,36 @@ public final class Comparators {
         };
     }
 
-    private static double area(final Rectangle r, HasGeometry g1) {
+    private static double volume(final Rectangle r, HasGeometry g1) {
         return g1.geometry().mbr().add(r).volume();
     }
 
-    public static <T extends HasGeometry> Comparator<HasGeometry> areaIncreaseThenAreaComparator(
+    public static <T extends HasGeometry> Comparator<HasGeometry> volumeIncreaseThenVolumeComparator(
             final Rectangle r) {
         return new Comparator<HasGeometry>() {
             @Override
             public int compare(HasGeometry g1, HasGeometry g2) {
-                int value = Double.compare(areaIncrease(r, g1), areaIncrease(r, g2));
+                int value = Double.compare(volumeIncrease(r, g1), volumeIncrease(r, g2));
                 if (value == 0) {
-                    value = Double.compare(area(r, g1), area(r, g2));
+                    value = Double.compare(volume(r, g1), volume(r, g2));
                 }
                 return value;
             }
         };
     }
 
-    private static float overlapArea(Rectangle r, List<? extends HasGeometry> list, HasGeometry g) {
+    private static float overlapVolume(Rectangle r, List<? extends HasGeometry> list, HasGeometry g) {
         Rectangle gPlusR = g.geometry().mbr().add(r);
         float m = 0;
         for (HasGeometry other : list) {
             if (other != g) {
-                m += gPlusR.intersectionArea(other.geometry().mbr());
+                m += gPlusR.intersectionVolume(other.geometry().mbr());
             }
         }
         return m;
     }
 
-    private static double areaIncrease(Rectangle r, HasGeometry g) {
+    private static double volumeIncrease(Rectangle r, HasGeometry g) {
         Rectangle gPlusR = g.geometry().mbr().add(r);
         return gPlusR.volume() - g.geometry().mbr().volume();
     }

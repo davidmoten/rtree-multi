@@ -35,7 +35,7 @@ import com.github.davidmoten.rtreemulti.Iterables;
 import com.github.davidmoten.rtreemulti.Leaf;
 import com.github.davidmoten.rtreemulti.NonLeaf;
 import com.github.davidmoten.rtreemulti.RTree;
-import com.github.davidmoten.rtreemulti.SelectorMinimalAreaIncrease;
+import com.github.davidmoten.rtreemulti.SelectorMinimalVolumeIncrease;
 import com.github.davidmoten.rtreemulti.SplitterQuadratic;
 import com.github.davidmoten.rtreemulti.SplitterRStar;
 import com.github.davidmoten.rtreemulti.Visitor;
@@ -365,7 +365,7 @@ public class RTreeTest {
 
     @Test
     public void testBuilder1() {
-        RTree<Object, Point> tree = RTree.minChildren(1).maxChildren(4).selector(new SelectorMinimalAreaIncrease())
+        RTree<Object, Point> tree = RTree.minChildren(1).maxChildren(4).selector(new SelectorMinimalVolumeIncrease())
                 .splitter(new SplitterQuadratic()).create();
         testBuiltTree(tree);
     }
@@ -378,14 +378,14 @@ public class RTreeTest {
 
     @Test
     public void testBuilder2() {
-        RTree<Object, Point> tree = RTree.selector(new SelectorMinimalAreaIncrease()).minChildren(1).maxChildren(4)
+        RTree<Object, Point> tree = RTree.selector(new SelectorMinimalVolumeIncrease()).minChildren(1).maxChildren(4)
                 .splitter(new SplitterQuadratic()).create();
         testBuiltTree(tree);
     }
 
     @Test
     public void testBuilder3() {
-        RTree<Object, Point> tree = RTree.maxChildren(4).selector(new SelectorMinimalAreaIncrease()).minChildren(1)
+        RTree<Object, Point> tree = RTree.maxChildren(4).selector(new SelectorMinimalVolumeIncrease()).minChildren(1)
                 .splitter(new SplitterQuadratic()).create();
         testBuiltTree(tree);
     }
@@ -393,7 +393,7 @@ public class RTreeTest {
     @Test
     public void testBuilder4() {
         RTree<Object, Point> tree = RTree.splitter(new SplitterQuadratic()).maxChildren(4)
-                .selector(new SelectorMinimalAreaIncrease()).minChildren(1).create();
+                .selector(new SelectorMinimalVolumeIncrease()).minChildren(1).create();
         testBuiltTree(tree);
     }
 

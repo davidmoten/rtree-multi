@@ -182,28 +182,28 @@ public class RectangleTest {
     public void testIntersectionAreWhenEqual() {
         Rectangle a = rectangle(10, 10, 30, 20);
         Rectangle b = rectangle(10, 10, 30, 20);
-        assertEquals(200f, a.intersectionArea(b), 0.0001);
+        assertEquals(200f, a.intersectionVolume(b), 0.0001);
     }
 
     @Test
     public void testIntersectionAreaWhenDontIntersect() {
         Rectangle a = rectangle(10, 10, 30, 20);
         Rectangle b = rectangle(50, 50, 60, 60);
-        assertEquals(0f, a.intersectionArea(b), 0.0001);
+        assertEquals(0f, a.intersectionVolume(b), 0.0001);
     }
 
     @Test
     public void testIntersectionAreaCornerIntersect() {
         Rectangle a = rectangle(10, 10, 30, 20);
         Rectangle b = rectangle(28, 17, 40, 40);
-        assertEquals(6f, a.intersectionArea(b), 0.0001);
+        assertEquals(6f, a.intersectionVolume(b), 0.0001);
     }
 
     @Test
     public void testIntersectionAreaTopIntersect() {
         Rectangle a = rectangle(10, 10, 30, 20);
         Rectangle b = rectangle(8, 17, 40, 40);
-        assertEquals(60f, a.intersectionArea(b), 0.0001);
+        assertEquals(60f, a.intersectionVolume(b), 0.0001);
     }
     
     @Test

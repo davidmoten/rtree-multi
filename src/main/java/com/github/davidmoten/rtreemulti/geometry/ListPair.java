@@ -14,7 +14,7 @@ public final class ListPair<T extends HasGeometry> {
     private final Group<T> group2;
     // these non-final variable mean that this class is not thread-safe
     // because access to them is not synchronized
-    private double areaSum = -1;
+    private double volumeSum = -1;
     private final double marginSum;
 
     public ListPair(List<T> list1, List<T> list2) {
@@ -31,10 +31,11 @@ public final class ListPair<T extends HasGeometry> {
         return group2;
     }
 
-    public double areaSum() {
-        if (areaSum == -1)
-            areaSum = group1.geometry().mbr().volume() + group2.geometry().mbr().volume();
-        return areaSum;
+    public double volumeSum() {
+        if (volumeSum == -1) {
+            volumeSum = group1.geometry().mbr().volume() + group2.geometry().mbr().volume();
+        }
+        return volumeSum;
     }
 
     public double marginSum() {

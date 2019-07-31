@@ -65,7 +65,7 @@ public final class PointDouble implements Point {
     }
 
     @Override
-    public double intersectionArea(Rectangle r) {
+    public double intersectionVolume(Rectangle r) {
         return 0;
     }
 

@@ -11,7 +11,7 @@ import com.github.davidmoten.rtreemulti.Context;
 import com.github.davidmoten.rtreemulti.Entries;
 import com.github.davidmoten.rtreemulti.Entry;
 import com.github.davidmoten.rtreemulti.Factories;
-import com.github.davidmoten.rtreemulti.SelectorMinimalAreaIncrease;
+import com.github.davidmoten.rtreemulti.SelectorMinimalVolumeIncrease;
 import com.github.davidmoten.rtreemulti.SplitterQuadratic;
 import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
@@ -20,7 +20,7 @@ import com.github.davidmoten.rtreemulti.internal.LeafDefault;
 public class LeafTest {
 
     private static Context<Object, Rectangle> context = new Context<Object, Rectangle>(2, 2, 4,
-            new SelectorMinimalAreaIncrease(), new SplitterQuadratic(),
+            new SelectorMinimalVolumeIncrease(), new SplitterQuadratic(),
             Factories.<Object, Rectangle>defaultFactory());
 
     @Test(expected = IllegalArgumentException.class)
