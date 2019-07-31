@@ -35,6 +35,7 @@ import com.github.davidmoten.rtree2.geometry.HasGeometry;
 import com.github.davidmoten.rtree2.geometry.Point;
 import com.github.davidmoten.rtree2.geometry.Rectangle;
 import com.github.davidmoten.rtree2.internal.EntryDefault;
+import com.github.davidmoten.rtree2.internal.Util;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -753,5 +754,24 @@ public class RTreeTest {
                 .assertValueCount(22) //
                 .assertCompleted();
     }
+    
+    @Test
+    public void testSmallRTreeStructureWithQuadraticSplitter() {
+        List<Entry<Object, Point>> entries = Stream.from(GreekEarthquakes.entries(Precision.DOUBLE)).take(3).toList().get();
+        System.out.println(Util.mbr(entries));
+        RTree<Object, Point> t = RTree.maxChildren(4).<Object, Point>create().add(entries); //
+        t.visit(new Visitor<Object, Point>() {
 
+            @Override
+            public void leaf(Leaf<Object, Point> node) {
+                System.out.println("LEAF mbr=" + node.geometry().mbr() + ", entries="+ node.entries().size() + ": " +  node.entries());
+                
+            }
+
+            @Override
+            public void nonLeaf(NonLeaf<Object, Point> node) {
+                System.out.println(node);
+            }});
+    }
+    
 }

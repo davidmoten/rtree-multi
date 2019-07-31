@@ -31,8 +31,8 @@ public final class RectangleDouble implements Rectangle {
         double[] b = new double[mins.length];
         for (int i = 0; i < a.length; i++) {
             // TODO minor perf improvement - use if
-            a[i] = min(mins[i], r.mins()[i]);
-            b[i] = max(mins[i], r.mins()[i]);
+            a[i] = min(mins[i], r.min(i));
+            b[i] = max(maxes[i], r.max(i));
         }
         return new RectangleDouble(a, b);
     }

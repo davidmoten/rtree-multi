@@ -952,5 +952,30 @@ public final class RTree<T, S extends Geometry> {
     public int dimensions() {
         return context.dimensions();
     }
+    
+    public void visit(Visitor<T, S> visitor) {
+        if (root.isPresent()) {
+        visit(root.get(), visitor);
+        }
+    }
 
+    private void visit(Node<T, S> node, Visitor<T, S> visitor) {
+        if (node instanceof Leaf) {
+            visit((Leaf<T,S>)node, visitor);
+        } else {
+            visit((NonLeaf<T,S>) node, visitor);
+        }
+    }
+    
+    private void visit(Leaf<T, S> leaf, Visitor<T, S> visitor) {
+        visitor.leaf(leaf);
+    }
+    
+    private void visit(NonLeaf<T, S> nonLeaf, Visitor<T, S> visitor) {
+        visitor.nonLeaf(nonLeaf);
+        for (Node<T, S> node: nonLeaf.children()) {
+            visit(node, visitor);
+        }
+    }
+    
 }
