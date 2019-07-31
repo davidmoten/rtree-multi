@@ -121,7 +121,7 @@ public final class RTree<T, S extends Geometry> {
     }
 
     public static Builder dimensions(int dimensions) {
-        return new Builder();
+        return new Builder().dimensions(dimensions);
     }
 
     /**
