@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>rtree-multi</artifactId>
-    <version>0.9-RC2-SNAPSHOT</version>
+    <version>0.1-RC1-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
     <description>Java implementation of an immutable in-memory R-Tree for spatial indexing</description>

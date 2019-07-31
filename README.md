@@ -23,6 +23,7 @@ Maven site reports are [here](http://davidmoten.github.io/rtree-multi/index.html
 
 Features
 ------------
+* supports n dimensions
 * immutable R-tree suitable for concurrency
 * Guttman's heuristics (Quadratic splitter) ([paper](https://www.google.com.au/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0CB8QFjAA&url=http%3A%2F%2Fpostgis.org%2Fsupport%2Frtree.pdf&ei=ieEQVJuKGdK8uATpgoKQCg&usg=AFQjCNED9w2KjgiAa9UI-UO_0eWjcADTng&sig2=rZ_dzKHBHY62BlkBuw3oCw&bvm=bv.74894050,d.c2E))
 * R*-tree heuristics ([paper](http://dbs.mathematik.uni-marburg.de/publications/myPapers/1990/BKSS90.pdf))
@@ -34,7 +35,7 @@ Features
 * JMH benchmarks
 * visualizer included
 * decent unit test [code coverage](http://davidmoten.github.io/rtree-multi/cobertura/index.html) 
-* R*-tree performs 900,000 searches/second returning 22 entries from a tree of 38,377 Greek earthquake locations on i7-920@2.67Ghz (maxChildren=4, minChildren=1). Insert at 240,000 entries per second.
+* R*-tree performs ? searches/second returning 22 entries from a tree of 38,377 Greek earthquake locations on i7-920@2.67Ghz (maxChildren=4, minChildren=1). Insert at 240,000 entries per second.
 * requires java 1.8 or later
 
 Number of points = 1000, max children per node 8: 
@@ -100,19 +101,17 @@ When you add an item to the R-tree you need to provide a geometry that represent
 extension of the item. The ``Geometries`` builder provides these factory methods:
 
 * ```Geometries.rectangle```
-* ```Geometries.circle```
 * ```Geometries.point```
-* ```Geometries.line``` (requires *jts-core* dependency)
 
 To add an item to an R-tree:
 
 ```java
-RTree<T,Geometry> tree = RTree.create();
-tree = tree.add(item, Geometries.point(10,20));
+RTree<T,Geometry> tree = RTree.dimensions(3).create();
+tree = tree.add(item, Geometries.point(10, 20, 30));
 ```
 or 
 ```java
-tree = tree.add(Entry.entry(item, Geometries.point(10,20));
+tree = tree.add(Entry.entry(item, Geometries.point(10, 20, 30));
 ```
 
 *Important note:* being an immutable data structure, calling ```tree.add(item, geometry)``` does nothing to ```tree```, 
@@ -122,7 +121,7 @@ it returns a new ```RTree``` containing the addition. Make sure you use the resu
 To remove an item from an R-tree, you need to match the item and its geometry:
 
 ```java
-tree = tree.delete(item, Geometries.point(10,20));
+tree = tree.delete(item, Geometries.point(10, 20, 30));
 ```
 or 
 ```java
@@ -131,16 +130,6 @@ tree = tree.delete(entry);
 
 *Important note:* being an immutable data structure, calling ```tree.delete(item, geometry)``` does nothing to ```tree```, 
 it returns a new ```RTree``` without the deleted item. Make sure you use the result of the ```delete```!
-
-### Geospatial geometries (lats and longs)
-To handle wraparounds of longitude values on the earth (180/-180 boundary trickiness) there are special factory methods in the `Geometries` class. If you want to do geospatial searches then you should use these methods to build `Point`s and `Rectangle`s:
-
-```java
-Point point = Geometries.pointGeographic(lon, lat);
-Rectangle rectangle = Geometries.rectangleGeographic(lon1, lat1, lon2, lat2);
-```
-
-Under the covers these methods normalize the longitude value to be in the interval [-180, 180) and for rectangles the rightmost longitude has 360 added to it if it is less than the leftmost longitude.
 
 ### Custom geometries
 You can also write your own implementation of [```Geometry```](src/main/java/com/github/davidmoten/rtree/geometry/Geometry.java). An implementation of ```Geometry``` needs to specify methods to:
@@ -160,27 +149,27 @@ For the R-tree to be well-behaved, the distance function if implemented needs to
 The advantage of an R-tree is the ability to search for items in a region reasonably quickly. 
 On average search is ```O(log(n))``` but worst case is ```O(n)```.
 
-Search methods return ```Observable``` sequences:
+Search methods return ```Iterable``` sequences:
 ```java
-Observable<Entry<T, Geometry>> results =
+Iterable<Entry<T, Geometry>> results =
     tree.search(Geometries.rectangle(0,0,2,2));
 ```
 or search for items within a distance from the given geometry:
 ```java
-Observable<Entry<T, Geometry>> results =
+Iterable<Entry<T, Geometry>> results =
     tree.search(Geometries.rectangle(0,0,2,2),5.0);
 ```
 To return all entries from an R-tree:
 ```java
-Observable<Entry<T, Geometry>> results = tree.entries();
+Iterable<Entry<T, Geometry>> results = tree.entries();
 ```
 
 Search with a custom geometry
 -----------------------------------
-Suppose you make a custom geometry like ```Polygon``` and you want to search an ```RTree<String,Point>``` for points inside the polygon. This is how you do it:
+Suppose you make a custom geometry like ```Polygon``` and you want to search an ```RTree<String, Point>``` for points inside the polygon. This is how you do it:
 
 ```java
-RTree<String, Point> tree = RTree.create();
+RTree<String, Point> tree = RTree.dimensions(2).create();
 Func2<Point, Polygon, Boolean> pointInPolygon = ...
 Polygon polygon = ...
 ...
@@ -214,13 +203,6 @@ Iterable<Entry<String, Point>> entries =
     tree.search(Geometries.rectangle(8, 15, 30, 35));
 ```
 
-Searching by distance on lat longs
-------------------------------------
-See [LatLongExampleTest.java](src/test/java/com/github/davidmoten/rtree-multi/LatLongExampleTest.java) for an example. The example depends on [*grumpy-core*](https://github.com/davidmoten/grumpy) artifact which is also on Maven Central.
-
-Another lat long example searching geo circles 
-------------------------------------------------
-See [LatLongExampleTest.testSearchLatLongCircles()](src/test/java/com/github/davidmoten/rtree-multi/LatLongExampleTest.java) for an example of searching circles around geographic points (using great circle distance).
 
 How to configure the R-tree for best performance
 --------------------------------------------------
@@ -243,11 +225,9 @@ Rectangle r = Geometries.rectangle(1.0, 2.0, 3.0, 4.0);
 Rectangle r = Geometries.rectangle(1.0f, 2.0f, 3.0f, 4.0f);
 ```
 
-The same creation methods exist for `Circle` and `Line`.
-
 Visualizer
 --------------
-To visualize the R-tree in a PNG file of size 600 by 600 pixels just call:
+To visualize a 2D R-tree (only) in a PNG file of size 600 by 600 pixels just call:
 ```java
 tree.visualize(600,600)
     .save("target/mytree.png");
