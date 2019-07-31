@@ -3,7 +3,6 @@ package com.github.davidmoten.rtreemulti.internal;
 import java.util.List;
 
 import com.github.davidmoten.rtreemulti.Context;
-import com.github.davidmoten.rtreemulti.Entries;
 import com.github.davidmoten.rtreemulti.Entry;
 import com.github.davidmoten.rtreemulti.Factory;
 import com.github.davidmoten.rtreemulti.Leaf;
@@ -34,7 +33,7 @@ public final class FactoryDefault<T, S extends Geometry> implements Factory<T, S
 
     @Override
     public Entry<T, S> createEntry(T value, S geometry) {
-        return Entries.entry(value, geometry);
+        return Entry.entry(value, geometry);
     }
 
 }

@@ -24,9 +24,9 @@ public class GreekEarthquakes {
                         double lon = Double.parseDouble(items[1]);
                         Entry<Object, Point> entry;
                         if (precision == Precision.DOUBLE)
-                            entry = Entries.entry(new Object(), Point.point(lat, lon));
+                            entry = Entry.entry(new Object(), Point.create(lat, lon));
                         else
-                            entry = Entries.entry(new Object(), Point.point((float) lat, (float) lon));
+                            entry = Entry.entry(new Object(), Point.create((float) lat, (float) lon));
                         return Stream.of(entry);
                     } else
                         return Stream.empty();

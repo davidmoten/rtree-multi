@@ -31,9 +31,9 @@ public class UtilTest {
 
     @Test
     public void testMbr() {
-        Rectangle a = Point.point(38.9, 23.9);
-        Rectangle b = Point.point(39.75, 25.25);
-        Rectangle c = Point.point(38.5, 22.25);
+        Rectangle a = Point.create(38.9, 23.9);
+        Rectangle b = Point.create(39.75, 25.25);
+        Rectangle c = Point.create(38.5, 22.25);
         Rectangle mbr = Util.mbr(Lists.newArrayList(a, b, c));
         assertEquals(38.5, mbr.min(0), PRECISION);
         assertEquals(39.75, mbr.max(0), PRECISION);

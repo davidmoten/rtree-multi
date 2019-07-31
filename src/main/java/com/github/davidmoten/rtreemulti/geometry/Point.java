@@ -10,7 +10,7 @@ public interface Point extends Rectangle {
         return mins();
     }
     
-    public static Point point(double... x) {
+    public static Point create(double... x) {
         return PointDouble.create(x);
     }
 

@@ -22,9 +22,9 @@ public class Utilities {
                 double y = Double.parseDouble(items[1]);
                 Entry<Object, Rectangle> entry;
                 if (precision == Precision.DOUBLE)
-                    entry = Entries.entry(new Object(), Rectangle.create(x, y, x + 1, y + 1));
+                    entry = Entry.entry(new Object(), Rectangle.create(x, y, x + 1, y + 1));
                 else
-                    entry = Entries.entry(new Object(), Rectangle.create((float) x, (float) y,
+                    entry = Entry.entry(new Object(), Rectangle.create((float) x, (float) y,
                             (float) x + 1, (float) y + 1));
                 list.add(entry);
             }

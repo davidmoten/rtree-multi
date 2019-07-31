@@ -293,9 +293,9 @@ public class BenchmarksRTree {
     private long searchNearestGreek(RTree<Object, Point> tree) {
         final Point p;
         if (precision == Precision.DOUBLE) {
-            p = Point.point(40.0, 27.0);
+            p = Point.create(40.0, 27.0);
         } else {
-            p = Point.point(40.0f, 27.0f);
+            p = Point.create(40.0f, 27.0f);
         }
         return Iterables.size(tree.nearest(p, 1, 300));
     }
@@ -311,9 +311,9 @@ public class BenchmarksRTree {
 
     private RTree<Object, Point> insertPoint(RTree<Object, Point> tree) {
         if (precision == Precision.DOUBLE) {
-            return tree.add(new Object(), Point.point(Math.random() * 1000, Math.random() * 1000));
+            return tree.add(new Object(), Point.create(Math.random() * 1000, Math.random() * 1000));
         } else {
-            return tree.add(new Object(), Point.point((float) Math.random() * 1000, (float) Math.random() * 1000));
+            return tree.add(new Object(), Point.create((float) Math.random() * 1000, (float) Math.random() * 1000));
         }
     }
 

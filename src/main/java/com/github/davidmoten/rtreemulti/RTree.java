@@ -223,7 +223,7 @@ public final class RTree<T, S extends Geometry> {
         private Selector selector = new SelectorMinimalVolumeIncrease();
         private double loadingFactor;
         private boolean star = false;
-        private Factory<Object, Geometry> factory = Factories.defaultFactory();
+        private Factory<Object, Geometry> factory = Factory.defaultFactory();
         private int dimensions = 2;
 
         private Builder() {
