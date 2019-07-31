@@ -120,21 +120,8 @@ public final class RTree<T, S extends Geometry> {
         return new Builder().dimensions(dimensions).create();
     }
 
-    /**
-     * Construct an Rtree through STR bulk loading. Default to maxChildren=128,
-     * minChildren=64 and fill nodes by a factor of 0.7
-     * 
-     * @param entries
-     *            entries to add to the R-tree
-     *
-     * @param <T>
-     *            the value type of the entries in the tree
-     * @param <S>
-     *            the geometry type of the entries in the tree
-     * @return a new RTree instance
-     */
-    public static <T, S extends Geometry> RTree<T, S> create(List<Entry<T, S>> entries) {
-        return new Builder().create(entries);
+    public static Builder dimensions(int dimensions) {
+        return new Builder();
     }
 
     /**
@@ -367,10 +354,9 @@ public final class RTree<T, S extends Geometry> {
          */
         @SuppressWarnings("unchecked")
         public <T, S extends Geometry> RTree<T, S> create(List<Entry<T, S>> entries) {
-            Preconditions.checkArgument(!entries.isEmpty(), "entries must not be empty");
             setDefaultCapacity();
 
-            Context<T, S> context = new Context<T, S>(entries.get(0).geometry().dimensions(), minChildren.get(), maxChildren.get(), selector, splitter,
+            Context<T, S> context = new Context<T, S>(dimensions, minChildren.get(), maxChildren.get(), selector, splitter,
                     (Factory<T, S>) factory);
             return packingSTR(entries, true, entries.size(), context);
         }

@@ -104,13 +104,13 @@ public class RTreeTest {
 
     @Test
     public void testBulkLoadingEmpty() {
-        RTree<Object, Point> tree = RTree.create(new ArrayList<Entry<Object, Point>>());
+        RTree<Object, Point> tree = RTree.dimensions(2).create(new ArrayList<Entry<Object, Point>>());
         assertTrue(Observable.from(tree.entries()).isEmpty().toBlocking().single());
     }
 
     @Test
     public void testBulkLoadingWithOneItemIsNotEmpty() {
-        RTree<Object, Rectangle> tree = RTree.create(Arrays.asList(e(1)));
+        RTree<Object, Rectangle> tree = RTree.dimensions(2).create(Arrays.asList(e(1)));
         assertFalse(tree.isEmpty());
     }
 
@@ -123,7 +123,7 @@ public class RTreeTest {
             // "),");
             entries.add(new EntryDefault<Integer, Geometry>(i, point));
         }
-        RTree<Integer, Geometry> tree = RTree.create(entries);
+        RTree<Integer, Geometry> tree = RTree.dimensions(2).create(entries);
         int entrySize = Observable.from(tree.entries()).count().toBlocking().single();
         System.out.println("entry count: " + entrySize);
         assertEquals(entrySize, entries.size());
@@ -132,7 +132,7 @@ public class RTreeTest {
     @Test
     public void testSearchOnOneItemOnBulkLoadingRTree() {
         Entry<Object, Rectangle> entry = e(1);
-        RTree<Object, Rectangle> tree = RTree.create(Arrays.asList(entry));
+        RTree<Object, Rectangle> tree = RTree.dimensions(2).create(Arrays.asList(entry));
         assertEquals(Arrays.asList(entry), Observable.from(tree.search(r(1))).toList().toBlocking().single());
     }
 
@@ -637,7 +637,7 @@ public class RTreeTest {
             tree2 = tree2.add(i, point);
             entries.add(new EntryDefault<Integer, Geometry>(i, point));
         }
-        RTree<Integer, Geometry> tree3 = RTree.create(entries);
+        RTree<Integer, Geometry> tree3 = RTree.dimensions(2).create(entries);
 
         // tree2.visualize(2000, 2000).save("target/tree22.png");
         // tree3.visualize(2000, 2000).save("target/tree33.png");

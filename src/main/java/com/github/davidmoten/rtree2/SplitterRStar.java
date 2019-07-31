@@ -44,7 +44,7 @@ public final class SplitterRStar implements Splitter {
         List<ListPair<T>> pairs = null;
         float lowestMarginSum = Float.MAX_VALUE;
         List<T> list = null;
-        for (int i = 0; i <= items.get(0).geometry().dimensions(); i++) {
+        for (int i = 0; i < items.get(0).geometry().dimensions(); i++) {
             for (boolean isUpper : BOOLEANS) {
                 if (list == null) {
                     list = new ArrayList<T>(items);
