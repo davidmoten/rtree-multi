@@ -35,7 +35,6 @@ public class UtilTest {
         Rectangle b = Geometries.point(39.75, 25.25);
         Rectangle c = Geometries.point(38.5, 22.25);
         Rectangle mbr = Util.mbr(Lists.newArrayList(a, b, c));
-        System.out.println(mbr);
         assertEquals(38.9, mbr.min(0), PRECISION);
         assertEquals(39.75, mbr.max(0), PRECISION);
         assertEquals(22.25, mbr.min(1), PRECISION);
