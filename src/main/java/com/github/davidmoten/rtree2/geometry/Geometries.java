@@ -9,7 +9,7 @@ public final class Geometries {
         // prevent instantiation
     }
 
-    public static Point point(double[] x) {
+    public static Point point(double... x) {
         return PointDouble.create(x);
     }
 
