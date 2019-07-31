@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import org.davidmoten.kool.Stream;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -35,7 +36,6 @@ import com.github.davidmoten.rtreemulti.geometry.HasGeometry;
 import com.github.davidmoten.rtreemulti.geometry.Point;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
 import com.github.davidmoten.rtreemulti.internal.EntryDefault;
-import com.github.davidmoten.rtreemulti.internal.Util;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -654,6 +654,7 @@ public class RTreeTest {
     }
 
     @Test
+    @Ignore //because doesn't assert anything
     public void testForMeiZhao() {
         for (int minChildren = 1; minChildren <= 2; minChildren++) {
             RTree<Integer, Point> tree = RTree.maxChildren(3).minChildren(minChildren).<Integer, Point>create()
@@ -662,6 +663,7 @@ public class RTreeTest {
                     .add(7, Point.create(5, 6)).add(8, Point.create(4, 3)).add(9, Point.create(3, 2))
                     .add(10, Point.create(9, 1)).add(11, Point.create(10, 4)).add(12, Point.create(6, 2))
                     .add(13, Point.create(8, 3));
+            System.out.println(tree.asString());
         }
     }
 
