@@ -29,6 +29,7 @@ import org.junit.runners.MethodSorters;
 
 import com.github.davidmoten.guavamini.Lists;
 import com.github.davidmoten.guavamini.Sets;
+import com.github.davidmoten.rtreemulti.RTree.Builder;
 import com.github.davidmoten.rtreemulti.geometry.Geometry;
 import com.github.davidmoten.rtreemulti.geometry.HasGeometry;
 import com.github.davidmoten.rtreemulti.geometry.Point;
@@ -786,30 +787,40 @@ public class RTreeTest {
         checkManyRandomSearches(4);
     }
 
-    
     private void checkManyRandomSearches(int dimensions) {
+        long t = System.currentTimeMillis();
         Random r = new Random();
         int numPoints = 1000;
         int maxOrdinate = 100;
-        int numSearches = 1000;
+        int numSearches = 100;
         int numLoops = 100;
-        for (int i = 0; i < numLoops; i++) {
-            List<Entry<Integer, Point>> entries = createRandom3DPoints(r, maxOrdinate, dimensions, numPoints);
-            RTree<Integer, Point> tree = RTree.dimensions(dimensions).create(entries);
-            // do searches of a random rectangle within domain
-            for (int j = 0; j < numSearches; j++) {
-                List<Entry<Integer, Point>> points = createRandom3DPoints(r, maxOrdinate, dimensions, 2);
-                Rectangle box = Rectangle.createOrdered(points.get(0).geometry().values(),
-                        points.get(1).geometry().values());
-                long count = Iterables.size(tree.search(box));
-                long expected = entries.stream().filter(e -> e.geometry().intersects(box)).count();
-                assertEquals(expected, count);
+        int checks = 0;
+        for (boolean isStar : new boolean[] { true, false }) {
+            for (int i = 0; i < numLoops; i++) {
+                List<Entry<Integer, Point>> entries = createRandomPoints(r, maxOrdinate, dimensions, numPoints);
+                Builder b = RTree.dimensions(dimensions);
+                if (isStar) {
+                    b = b.star();
+                }
+                RTree<Integer, Point> tree = b.create(entries);
+                // do searches of a random rectangle within domain
+                for (int j = 0; j < numSearches; j++) {
+                    List<Entry<Integer, Point>> points = createRandomPoints(r, maxOrdinate, dimensions, 2);
+                    Rectangle box = Rectangle.createOrdered(points.get(0).geometry().values(),
+                            points.get(1).geometry().values());
+                    long count = Iterables.size(tree.search(box));
+                    long expected = entries.stream().filter(e -> e.geometry().intersects(box)).count();
+                    assertEquals(expected, count);
+                    checks++;
+                }
             }
         }
+        System.out.println(
+                "checked " + checks + " searches in " + dimensions + "D in " + (System.currentTimeMillis() - t) + "ms");
     }
 
-    // creates random 3d points with integer ordinates between 0 and max-1
-    private List<Entry<Integer, Point>> createRandom3DPoints(Random r, int maxOrdinate, int dimensions, int numPoints) {
+    // creates random points with integer ordinates between 0 and max-1
+    private List<Entry<Integer, Point>> createRandomPoints(Random r, int maxOrdinate, int dimensions, int numPoints) {
         return Stream //
                 .from(r.doubles(dimensions * numPoints) //
                         .mapToObj(x -> (int) Math.round(x * maxOrdinate)) //
