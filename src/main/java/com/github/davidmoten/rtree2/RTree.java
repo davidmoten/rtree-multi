@@ -445,12 +445,14 @@ public final class RTree<T, S extends Geometry> {
      */
     @SuppressWarnings("unchecked")
     public RTree<T, S> add(Entry<? extends T, ? extends S> entry) {
+        Preconditions.checkArgument(dimensions() == entry.geometry().dimensions(),
+                entry + " has wrong number of dimensions, expected " + dimensions());
         if (root.isPresent()) {
             List<Node<T, S>> nodes = root.get().add(entry);
             Node<T, S> node;
-            if (nodes.size() == 1)
+            if (nodes.size() == 1) {
                 node = nodes.get(0);
-            else {
+            } else {
                 node = context.factory().createNonLeaf(nodes, context);
             }
             return new RTree<T, S>(node, size + 1, context);
@@ -484,8 +486,9 @@ public final class RTree<T, S extends Geometry> {
      */
     public RTree<T, S> add(Iterable<Entry<T, S>> entries) {
         RTree<T, S> tree = this;
-        for (Entry<T, S> entry : entries)
+        for (Entry<T, S> entry : entries) {
             tree = tree.add(entry);
+        }
         return tree;
     }
 
@@ -635,6 +638,7 @@ public final class RTree<T, S extends Geometry> {
         return new Predicate<Geometry>() {
             @Override
             public boolean test(Geometry g) {
+                System.out.println(g);
                 return g.intersects(r);
             }
         };

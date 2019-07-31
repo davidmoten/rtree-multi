@@ -40,7 +40,7 @@ public final class Comparators {
     }
 
     private static double area(final Rectangle r, HasGeometry g1) {
-        return g1.geometry().mbr().add(r).area();
+        return g1.geometry().mbr().add(r).volume();
     }
 
     public static <T extends HasGeometry> Comparator<HasGeometry> areaIncreaseThenAreaComparator(
@@ -70,7 +70,7 @@ public final class Comparators {
 
     private static double areaIncrease(Rectangle r, HasGeometry g) {
         Rectangle gPlusR = g.geometry().mbr().add(r);
-        return gPlusR.area() - g.geometry().mbr().area();
+        return gPlusR.volume() - g.geometry().mbr().volume();
     }
 
     /**

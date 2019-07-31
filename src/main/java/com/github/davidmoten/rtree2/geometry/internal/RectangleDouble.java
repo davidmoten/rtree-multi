@@ -90,7 +90,7 @@ public final class RectangleDouble implements Rectangle {
         if (!intersects(r))
             return 0;
         else {
-            return create(GeometryUtil.max(mins, r.mins()), GeometryUtil.min(maxes, r.maxes())).area();
+            return create(GeometryUtil.max(mins, r.mins()), GeometryUtil.min(maxes, r.maxes())).volume();
         }
     }
 
@@ -114,7 +114,7 @@ public final class RectangleDouble implements Rectangle {
     }
 
     @Override
-    public double perimeter() {
+    public double surfaceArea() {
         double sum = 0;
         for (int i = 0; i < mins.length; i++) {
             double product = 1;
@@ -129,7 +129,7 @@ public final class RectangleDouble implements Rectangle {
     }
 
     @Override
-    public double area() {
+    public double volume() {
         double v = 1;
         for (int i = 0; i < mins.length; i++) {
             v *= maxes[i] - mins[i];

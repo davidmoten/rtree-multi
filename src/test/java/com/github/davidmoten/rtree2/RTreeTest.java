@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import org.davidmoten.kool.Stream;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -744,7 +745,10 @@ public class RTreeTest {
         Iterable<Entry<Object, Point>> entriesDouble = GreekEarthquakes.entries(Precision.DOUBLE);
         RTree<Object, Point> t = RTree.maxChildren(4).<Object, Point>create().add(entriesDouble); //
         assertEquals(38377, Iterables.size(t.entries()));
-        Observable.from(t.search(Geometries.rectangle(40, 27.0, 40.5, 27.5))) //
+        Rectangle rectangle = Geometries.rectangle(40, 27.0, 40.5, 27.5);
+        long count = Stream.from(t.entries()).filter(x -> rectangle.intersects(x.geometry())).count().get();
+        assertEquals(22, count);
+        Observable.from(t.search(rectangle)) //
                 .test() //
                 .assertValueCount(22) //
                 .assertCompleted();

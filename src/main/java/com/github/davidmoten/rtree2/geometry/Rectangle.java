@@ -6,11 +6,11 @@ public interface Rectangle extends Geometry, HasGeometry {
 
     double[] maxes();
 
-    double area();
+    double volume();
 
     double intersectionArea(Rectangle r);
 
-    double perimeter();
+    double surfaceArea();
 
     Rectangle add(Rectangle r);
 

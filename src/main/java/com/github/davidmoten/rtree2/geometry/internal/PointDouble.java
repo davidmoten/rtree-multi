@@ -50,7 +50,7 @@ public final class PointDouble implements Point {
     }
 
     @Override
-    public double area() {
+    public double volume() {
         return 0;
     }
 
@@ -70,7 +70,7 @@ public final class PointDouble implements Point {
     }
 
     @Override
-    public double perimeter() {
+    public double surfaceArea() {
         return 0;
     }
 
@@ -85,7 +85,7 @@ public final class PointDouble implements Point {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (!(obj instanceof PointDouble))
             return false;
         return Arrays.equals(x, ((PointDouble) obj).x);
     }
