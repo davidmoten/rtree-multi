@@ -777,24 +777,46 @@ public class RTreeTest {
     }
 
     @Test
-    public void test3d() {
+    public void testManyRandomSearches3D() {
+        checkManyRandomSearches(3);
+    }
+
+    @Test
+    public void testManyRandomSearches4D() {
+        checkManyRandomSearches(4);
+    }
+
+    
+    private void checkManyRandomSearches(int dimensions) {
         Random r = new Random();
-        int n = 1000;
-        int max = 1000;
-        for (int i = 0; i < 10; i++) {
-            List<Entry<Integer, Point>> entries = Stream //
-                    .from(r.doubles(3 * n).mapToObj(x -> (int) Math.round(x * max)).collect(Collectors.toList())) //
-                    .buffer(3) //
-                    .map(x -> Entry.entry(1, Point.create(x.get(0), x.get(1), x.get(2)))).toList().get();
-            RTree<Integer, Point> tree = RTree.dimensions(3).star().create(entries);
-            // do 1000 searches of a random rectangle within domain
-            for (int j = 0; j < 1000; j++) {
-                List<Integer> ints = r.doubles().limit(6).mapToObj(x -> (int) Math.round(x * max))
-                        .collect(Collectors.toList());
-                List<Entry<Integer, Point>> points = Stream.from(ints).buffer(3)
-                        .map(x -> Entry.entry(1, Point.create(x.get(0), x.get(1), x.get(2)))).toList().get();
+        int numPoints = 1000;
+        int maxOrdinate = 100;
+        int numSearches = 1000;
+        int numLoops = 100;
+        for (int i = 0; i < numLoops; i++) {
+            List<Entry<Integer, Point>> entries = createRandom3DPoints(r, maxOrdinate, dimensions, numPoints);
+            RTree<Integer, Point> tree = RTree.dimensions(dimensions).create(entries);
+            // do searches of a random rectangle within domain
+            for (int j = 0; j < numSearches; j++) {
+                List<Entry<Integer, Point>> points = createRandom3DPoints(r, maxOrdinate, dimensions, 2);
+                Rectangle box = Rectangle.createOrdered(points.get(0).geometry().values(),
+                        points.get(1).geometry().values());
+                long count = Iterables.size(tree.search(box));
+                long expected = entries.stream().filter(e -> e.geometry().intersects(box)).count();
+                assertEquals(expected, count);
             }
         }
+    }
+
+    // creates random 3d points with integer ordinates between 0 and max-1
+    private List<Entry<Integer, Point>> createRandom3DPoints(Random r, int maxOrdinate, int dimensions, int numPoints) {
+        return Stream //
+                .from(r.doubles(dimensions * numPoints) //
+                        .mapToObj(x -> (int) Math.round(x * maxOrdinate)) //
+                        .collect(Collectors.toList())) //
+                .buffer(dimensions) //
+                .map((List<Integer> x) -> Entry.entry(1, Point.create(x))) //
+                .toList().get();
     }
 
 }

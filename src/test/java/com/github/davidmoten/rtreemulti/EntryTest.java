@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
-import com.github.davidmoten.junit.Asserts;
 import com.github.davidmoten.rtreemulti.geometry.Point;
 
 public class EntryTest {

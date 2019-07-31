@@ -29,9 +29,20 @@ public interface Rectangle extends Geometry, HasGeometry {
     default double max(int index) {
         return maxes()[index];
     }
-    
-    public static Rectangle create(double[] x, double[] y) {
-        return RectangleDouble.create(x, y);
+
+    public static Rectangle create(double[] mins, double[] maxes) {
+        return RectangleDouble.create(mins, maxes);
+    }
+
+    public static Rectangle createOrdered(double[] x, double[] y) {
+        Preconditions.checkArgument(x.length == y.length, "x and y must have same length");
+        double[] mins = new double[x.length];
+        double[] maxes = new double[y.length];
+        for (int i = 0; i < x.length; i++) {
+            mins[i] = Math.min(x[i], y[i]);
+            maxes[i] = Math.max(x[i], y[i]);
+        }
+        return create(mins, maxes);
     }
 
     // the first half of the values correspond to the minimum values of every
