@@ -808,11 +808,23 @@ public class RTreeTest {
         for (int i = 0; i < 10; i++) {
             List<Integer> list = r.doubles(3 * n).mapToObj(x -> (int) Math.round(x * max))
                     .collect(Collectors.toList());
-            RTree<Object, Point> tree = RTree.dimensions(3).star().<Object, Point>create();
-            tree = tree.add(Stream //
+            RTree<Integer, Point> tree = RTree.dimensions(3).star().create();
+            List<Entry<Integer, Point>> entries = Stream //
                     .from(list) //
                     .buffer(3) //
-                    .map(x -> Entries.entry(1, Geometries.point(x.get(0), x.get(1), x.get(2)))));
+                    .map(x -> Entries.entry(1, Geometries.point(x.get(0), x.get(1), x.get(2))))
+                    .toList().get();
+            tree = tree.add(entries);
+            // do 1000 searches of a random rectangle within domain
+            for (int j = 0; j < 1000; j++) {
+                List<Integer> ints = r.doubles().limit(6).mapToObj(x -> (int) Math.round(x * max))
+                        .collect(Collectors.toList());
+                List<Entry<Integer, Point>> points = Stream.from(ints).buffer(3)
+                        .map(x -> Entries.entry(1, Geometries.point(x.get(0), x.get(1), x.get(2))))
+                        .toList().get();
+                
+
+            }
         }
     }
 
