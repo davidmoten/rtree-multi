@@ -120,7 +120,7 @@ public final class RectangleDouble implements Rectangle {
             double product = 1;
             for (int j = 0; j < mins.length; j++) {
                 if (i != j) {
-                    product *= maxes[i] - mins[i];
+                    product *= maxes[j] - mins[j];
                 }
             }
             sum += product;

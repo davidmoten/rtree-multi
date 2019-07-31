@@ -203,5 +203,17 @@ public class RectangleTest {
         Rectangle b = rectangle(8, 17, 40, 40);
         assertEquals(60f, a.intersectionArea(b), 0.0001);
     }
+    
+    @Test
+    public void testVolume() {
+        Rectangle a = rectangle(1, 2, 3, 3, 5, 7);
+        assertEquals(24, a.volume(), PRECISION);
+    }
+    
+    @Test
+    public void testSurfaceArea() {
+        Rectangle a = rectangle(1, 2, 3, 3, 5, 7);
+        assertEquals(52, a.surfaceArea(), PRECISION);
+    }
 
 }

@@ -66,9 +66,9 @@ public final class SplitterRStar implements Splitter {
 
     private static Comparator<HasGeometry> comparator(int dimension, boolean upper) {
         if (upper) {
-            return (a, b) -> Double.compare(a.geometry().mbr().maxes()[dimension], b.geometry().mbr().maxes()[dimension]);
+            return (a, b) -> Double.compare(a.geometry().mbr().max(dimension), b.geometry().mbr().max(dimension));
         } else {
-            return (a, b) -> Double.compare(a.geometry().mbr().mins()[dimension], b.geometry().mbr().mins()[dimension]);
+            return (a, b) -> Double.compare(a.geometry().mbr().min(dimension), b.geometry().mbr().min(dimension));
         }
     }
 
