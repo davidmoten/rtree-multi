@@ -13,8 +13,8 @@ public class PointTest {
 	@Test
 	public void testCoordinates() {
 		Point point = Geometries.point(1, 2);
-		assertEquals(1, point.x(), PRECISION);
-		assertEquals(2, point.y(), PRECISION);
+		assertEquals(1, point.x(0), PRECISION);
+		assertEquals(2, point.x(1), PRECISION);
 	}
 
 	@Test

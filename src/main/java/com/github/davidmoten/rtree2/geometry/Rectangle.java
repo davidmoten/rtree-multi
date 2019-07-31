@@ -14,7 +14,7 @@ public interface Rectangle extends Geometry, HasGeometry {
 
     Rectangle add(Rectangle r);
 
-    boolean contains(double[] x);
+    boolean contains(double... x);
     
     default double x(int index) {
         return x()[index];
