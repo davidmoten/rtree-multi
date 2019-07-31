@@ -30,6 +30,8 @@ public final class SplitterRStar implements Splitter {
         };
     }
 
+    private static final boolean[] BOOLEANS = new boolean[] { false, true };
+
     @Override
     public <T extends HasGeometry> ListPair<T> split(List<T> items, int minSize) {
         Preconditions.checkArgument(!items.isEmpty());
@@ -42,41 +44,32 @@ public final class SplitterRStar implements Splitter {
         List<ListPair<T>> pairs = null;
         float lowestMarginSum = Float.MAX_VALUE;
         List<T> list = null;
-        for (SortType sortType : SortType.values()) {
-            if (list == null) {
-                list = new ArrayList<T>(items);
-            }
-            Collections.sort(list, comparator(sortType));
-            List<ListPair<T>> p = getPairs(minSize, list);
-            float marginSum = marginValueSum(p);
-            if (marginSum < lowestMarginSum) {
-                lowestMarginSum = marginSum;
-                pairs = p;
-                // because p uses subViews of list we need to create a new one
-                // for further comparisons
-                list = null;
+        for (int i = 0; i <= items.get(0).geometry().dimensions(); i++) {
+            for (boolean isUpper : BOOLEANS) {
+                if (list == null) {
+                    list = new ArrayList<T>(items);
+                }
+                Collections.sort(list, comparator(i, isUpper));
+                List<ListPair<T>> p = getPairs(minSize, list);
+                float marginSum = marginValueSum(p);
+                if (marginSum < lowestMarginSum) {
+                    lowestMarginSum = marginSum;
+                    pairs = p;
+                    // because p uses subViews of list we need to create a new one
+                    // for further comparisons
+                    list = null;
+                }
             }
         }
         return Collections.min(pairs, comparator);
     }
 
-    private static Comparator<HasGeometry> comparator(SortType sortType) {
-        switch (sortType) {
-        case X_LOWER:
-            return INCREASING_X_LOWER;
-        case X_UPPER:
-            return INCREASING_X_UPPER;
-        case Y_LOWER:
-            return INCREASING_Y_LOWER;
-        case Y_UPPER:
-            return INCREASING_Y_UPPER;
-        default:
-            throw new IllegalArgumentException("unknown SortType " + sortType);
+    private static Comparator<HasGeometry> comparator(int dimension, boolean upper) {
+        if (upper) {
+            return (a, b) -> Double.compare(a.geometry().mbr().y()[dimension], b.geometry().mbr().y()[dimension]);
+        } else {
+            return (a, b) -> Double.compare(a.geometry().mbr().x()[dimension], b.geometry().mbr().x()[dimension]);
         }
-    }
-
-    private enum SortType {
-        X_LOWER, X_UPPER, Y_LOWER, Y_UPPER;
     }
 
     private static <T extends HasGeometry> float marginValueSum(List<ListPair<T>> list) {
@@ -99,38 +92,6 @@ public final class SplitterRStar implements Splitter {
         }
         return pairs;
     }
-
-    private static final Comparator<HasGeometry> INCREASING_X_LOWER = new Comparator<HasGeometry>() {
-
-        @Override
-        public int compare(HasGeometry n1, HasGeometry n2) {
-            return Double.compare(n1.geometry().mbr().x1(), n2.geometry().mbr().x1());
-        }
-    };
-
-    private static final Comparator<HasGeometry> INCREASING_X_UPPER = new Comparator<HasGeometry>() {
-
-        @Override
-        public int compare(HasGeometry n1, HasGeometry n2) {
-            return Double.compare(n1.geometry().mbr().x2(), n2.geometry().mbr().x2());
-        }
-    };
-
-    private static final Comparator<HasGeometry> INCREASING_Y_LOWER = new Comparator<HasGeometry>() {
-
-        @Override
-        public int compare(HasGeometry n1, HasGeometry n2) {
-            return Double.compare(n1.geometry().mbr().y1(), n2.geometry().mbr().y1());
-        }
-    };
-
-    private static final Comparator<HasGeometry> INCREASING_Y_UPPER = new Comparator<HasGeometry>() {
-
-        @Override
-        public int compare(HasGeometry n1, HasGeometry n2) {
-            return Double.compare(n1.geometry().mbr().y2(), n2.geometry().mbr().y2());
-        }
-    };
 
     private static double overlap(ListPair<? extends HasGeometry> pair) {
         return pair.group1().geometry().mbr().intersectionArea(pair.group2().geometry().mbr());
