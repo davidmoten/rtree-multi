@@ -35,7 +35,7 @@ Features
 * JMH benchmarks
 * visualizer included
 * decent unit test [code coverage](http://davidmoten.github.io/rtree-multi/cobertura/index.html) 
-* R*-tree performs ? searches/second returning 22 entries from a tree of 38,377 Greek earthquake locations on i7-920@2.67Ghz (maxChildren=4, minChildren=1). Insert at 240,000 entries per second.
+* R*-tree performs ? searches/second returning 22 entries from a tree of 38,377 Greek earthquake locations on i7-920@2.67Ghz (maxChildren=4, minChildren=1). Insert at ? entries per second.
 * requires java 1.8 or later
 
 Number of points = 1000, max children per node 8: 
@@ -77,8 +77,6 @@ The following geometries are supported for insertion in an RTree:
 
 * `Rectangle`
 * `Point`
-* `Circle`
-* `Line`
 
 ### Generic typing
 If for instance you know that the entry geometry is always ```Point``` then create an ```RTree``` specifying that generic type to gain more type safety:
@@ -98,20 +96,20 @@ See benchmarks below for some of the performance differences.
 
 ### Add items to the R-tree
 When you add an item to the R-tree you need to provide a geometry that represents the 2D physical location or 
-extension of the item. The ``Geometries`` builder provides these factory methods:
+extension of the item. You can use these factory methods to create your geometries:
 
-* ```Geometries.rectangle```
-* ```Geometries.point```
+* ```Rectangle.create```
+* ```Point.create```
 
 To add an item to an R-tree:
 
 ```java
 RTree<T,Geometry> tree = RTree.dimensions(3).create();
-tree = tree.add(item, Geometries.point(10, 20, 30));
+tree = tree.add(item, Point.create(10, 20, 30));
 ```
 or 
 ```java
-tree = tree.add(Entry.entry(item, Geometries.point(10, 20, 30));
+tree = tree.add(Entry.entry(item, Point.create(10, 20, 30));
 ```
 
 *Important note:* being an immutable data structure, calling ```tree.add(item, geometry)``` does nothing to ```tree```, 
@@ -121,7 +119,7 @@ it returns a new ```RTree``` containing the addition. Make sure you use the resu
 To remove an item from an R-tree, you need to match the item and its geometry:
 
 ```java
-tree = tree.delete(item, Geometries.point(10, 20, 30));
+tree = tree.delete(item, Point.create(10, 20, 30));
 ```
 or 
 ```java
@@ -152,12 +150,12 @@ On average search is ```O(log(n))``` but worst case is ```O(n)```.
 Search methods return ```Iterable``` sequences:
 ```java
 Iterable<Entry<T, Geometry>> results =
-    tree.search(Geometries.rectangle(0,0,2,2));
+    tree.search(Rectangle.create(0, 0, 2, 2));
 ```
 or search for items within a distance from the given geometry:
 ```java
 Iterable<Entry<T, Geometry>> results =
-    tree.search(Geometries.rectangle(0,0,2,2),5.0);
+    tree.search(Rectangle.create(0, 0, 2, 2), 5.0);
 ```
 To return all entries from an R-tree:
 ```java
@@ -192,15 +190,14 @@ Example
 --------------
 ```java
 import com.github.davidmoten.rtree-multi.RTree;
-import static com.github.davidmoten.rtree-multi.geometry.Geometries.*;
 
 RTree<String, Point> tree = RTree.maxChildren(5).create();
-tree = tree.add("DAVE", point(10, 20))
-           .add("FRED", point(12, 25))
-           .add("MARY", point(97, 125));
+tree = tree.add("DAVE", Point.create(10, 20))
+           .add("FRED", Point.create(12, 25))
+           .add("MARY", Point.create(97, 125));
  
 Iterable<Entry<String, Point>> entries =
-    tree.search(Geometries.rectangle(8, 15, 30, 35));
+    tree.search(Rectangle.create(8, 15, 30, 35));
 ```
 
 
@@ -219,10 +216,10 @@ To minimize memory use you can use geometries that store single precision decima
 
 ```java
 // create geometry using double precision 
-Rectangle r = Geometries.rectangle(1.0, 2.0, 3.0, 4.0);
+Rectangle r = Rectangle.create(1.0, 2.0, 3.0, 4.0);
 
 // create geometry using single precision
-Rectangle r = Geometries.rectangle(1.0f, 2.0f, 3.0f, 4.0f);
+Rectangle r = Rectangle.create(1.0f, 2.0f, 3.0f, 4.0f);
 ```
 
 Visualizer
@@ -239,14 +236,14 @@ Visualize as text
 The ```RTree.asString()``` method returns output like this:
 
 ```
-mbr=Rectangle [x1=10.0, y1=4.0, x2=62.0, y2=85.0]
-  mbr=Rectangle [x1=28.0, y1=4.0, x2=34.0, y2=85.0]
-    entry=Entry [value=2, geometry=Point [x=29.0, y=4.0]]
-    entry=Entry [value=1, geometry=Point [x=28.0, y=19.0]]
-    entry=Entry [value=4, geometry=Point [x=34.0, y=85.0]]
-  mbr=Rectangle [x1=10.0, y1=45.0, x2=62.0, y2=63.0]
-    entry=Entry [value=5, geometry=Point [x=62.0, y=45.0]]
-    entry=Entry [value=3, geometry=Point [x=10.0, y=63.0]]
+mbr=Rectangle [mins=[10.0, 4.0], maxes=[62.0, 85.0]]
+  mbr=Rectangle [mins=[28.0, 4.0], maxes=[34.0, 85.0]]
+    entry=Entry [value=2, geometry=Point [29.0, 4.0]]
+    entry=Entry [value=1, geometry=Point [28.0, 19.0]]
+    entry=Entry [value=4, geometry=Point [34.0, 85.0]]
+  mbr=Rectangle [mins=[10.0, 45.0], maxes=[62.0, 63.0]]
+    entry=Entry [value=5, geometry=Point [62.0, 45.0]]
+    entry=Entry [value=3, geometry=Point [10.0, 63.0]]
 ```
 
 Serialization

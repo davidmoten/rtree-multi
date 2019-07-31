@@ -65,7 +65,7 @@ public final class RectangleDouble implements Rectangle {
 
     @Override
     public String toString() {
-        return "Rectangle [x=" + Arrays.toString(mins) + ", y=" + Arrays.toString(maxes) + "]";
+        return "Rectangle [mins=" + Arrays.toString(mins) + ", maxes=" + Arrays.toString(maxes) + "]";
     }
 
     @Override
