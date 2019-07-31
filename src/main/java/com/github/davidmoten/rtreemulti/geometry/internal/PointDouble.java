@@ -2,7 +2,6 @@ package com.github.davidmoten.rtreemulti.geometry.internal;
 
 import java.util.Arrays;
 
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Geometry;
 import com.github.davidmoten.rtreemulti.geometry.Point;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
@@ -56,7 +55,7 @@ public final class PointDouble implements Point {
 
     @Override
     public Rectangle add(Rectangle r) {
-        return Geometries.rectangle(GeometryUtil.min(x, r.mins()), GeometryUtil.max(x, r.maxes()));
+        return Rectangle.create(GeometryUtil.min(x, r.mins()), GeometryUtil.max(x, r.maxes()));
     }
 
     @Override

@@ -8,9 +8,6 @@ import java.util.zip.GZIPInputStream;
 
 import org.davidmoten.kool.Stream;
 
-import com.github.davidmoten.rtreemulti.Entries;
-import com.github.davidmoten.rtreemulti.Entry;
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Point;
 
 public class GreekEarthquakes {
@@ -27,9 +24,9 @@ public class GreekEarthquakes {
                         double lon = Double.parseDouble(items[1]);
                         Entry<Object, Point> entry;
                         if (precision == Precision.DOUBLE)
-                            entry = Entries.entry(new Object(), Geometries.point(lat, lon));
+                            entry = Entries.entry(new Object(), Point.point(lat, lon));
                         else
-                            entry = Entries.entry(new Object(), Geometries.point((float) lat, (float) lon));
+                            entry = Entries.entry(new Object(), Point.point((float) lat, (float) lon));
                         return Stream.of(entry);
                     } else
                         return Stream.empty();

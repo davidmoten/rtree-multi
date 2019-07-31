@@ -1,6 +1,5 @@
 package com.github.davidmoten.rtreemulti;
 
-import static com.github.davidmoten.rtreemulti.geometry.Geometries.rectangle;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
@@ -846,7 +845,7 @@ public final class RTree<T, S extends Geometry> {
         }
         if (r == null) {
             double[] zero = new double[context.dimensions()];
-            return rectangle(zero, zero);
+            return Rectangle.create(zero, zero);
         } else {
             return r;
         }

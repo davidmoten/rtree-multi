@@ -11,19 +11,15 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
 
-import com.github.davidmoten.rtreemulti.Entry;
-import com.github.davidmoten.rtreemulti.Iterables;
-import com.github.davidmoten.rtreemulti.RTree;
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Point;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
 
 @State(Scope.Benchmark)
 public class BenchmarksRTree {
 
-    private static final Rectangle DEFAULT_1000_RECTANGLE = Geometries.rectangle(500, 500, 630, 630);
+    private static final Rectangle DEFAULT_1000_RECTANGLE = Rectangle.create(500, 500, 630, 630);
 
-    private static final Rectangle DEFAULT_GREEK_RECTANGLE = Geometries.rectangle(40, 27.0, 40.5, 27.5);
+    private static final Rectangle DEFAULT_GREEK_RECTANGLE = Rectangle.create(40, 27.0, 40.5, 27.5);
 
     private static final Precision precision = Precision.DOUBLE;
 
@@ -289,7 +285,7 @@ public class BenchmarksRTree {
         if (precision == Precision.DOUBLE) {
             r = DEFAULT_GREEK_RECTANGLE;
         } else {
-            r = Geometries.rectangle(40f, 27.0f, 40.5f, 27.5f);
+            r = Rectangle.create(40f, 27.0f, 40.5f, 27.5f);
         }
         return r;
     }
@@ -297,9 +293,9 @@ public class BenchmarksRTree {
     private long searchNearestGreek(RTree<Object, Point> tree) {
         final Point p;
         if (precision == Precision.DOUBLE) {
-            p = Geometries.point(40.0, 27.0);
+            p = Point.point(40.0, 27.0);
         } else {
-            p = Geometries.point(40.0f, 27.0f);
+            p = Point.point(40.0f, 27.0f);
         }
         return Iterables.size(tree.nearest(p, 1, 300));
     }
@@ -315,9 +311,9 @@ public class BenchmarksRTree {
 
     private RTree<Object, Point> insertPoint(RTree<Object, Point> tree) {
         if (precision == Precision.DOUBLE) {
-            return tree.add(new Object(), Geometries.point(Math.random() * 1000, Math.random() * 1000));
+            return tree.add(new Object(), Point.point(Math.random() * 1000, Math.random() * 1000));
         } else {
-            return tree.add(new Object(), Geometries.point((float) Math.random() * 1000, (float) Math.random() * 1000));
+            return tree.add(new Object(), Point.point((float) Math.random() * 1000, (float) Math.random() * 1000));
         }
     }
 

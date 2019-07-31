@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.github.davidmoten.guavamini.Lists;
 import com.github.davidmoten.junit.Asserts;
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
+import com.github.davidmoten.rtreemulti.geometry.Point;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
 import com.github.davidmoten.rtreemulti.internal.Util;
 
@@ -23,7 +23,7 @@ public class UtilTest {
 
     @Test
     public void testMbrWithNegativeValues() {
-        Rectangle r = Geometries.rectangle(-2D, -2, -1, -1);
+        Rectangle r = Rectangle.create(-2D, -2, -1, -1);
         Rectangle mbr = Util.mbr(Collections.singleton(r));
         assertEquals(r, mbr);
         System.out.println(r);
@@ -31,9 +31,9 @@ public class UtilTest {
 
     @Test
     public void testMbr() {
-        Rectangle a = Geometries.point(38.9, 23.9);
-        Rectangle b = Geometries.point(39.75, 25.25);
-        Rectangle c = Geometries.point(38.5, 22.25);
+        Rectangle a = Point.point(38.9, 23.9);
+        Rectangle b = Point.point(39.75, 25.25);
+        Rectangle c = Point.point(38.5, 22.25);
         Rectangle mbr = Util.mbr(Lists.newArrayList(a, b, c));
         assertEquals(38.5, mbr.min(0), PRECISION);
         assertEquals(39.75, mbr.max(0), PRECISION);

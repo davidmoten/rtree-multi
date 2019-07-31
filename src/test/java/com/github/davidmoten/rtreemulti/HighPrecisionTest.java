@@ -8,9 +8,6 @@ import java.math.RoundingMode;
 
 import org.junit.Test;
 
-import com.github.davidmoten.rtreemulti.Iterables;
-import com.github.davidmoten.rtreemulti.RTree;
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
 
 public class HighPrecisionTest {
@@ -27,12 +24,12 @@ public class HighPrecisionTest {
     @Test
     public void testHighPrecision() {
         RTree<Integer, Rectangle> tree = RTree.create();
-        tree = tree.add(1, Geometries.rectangle(0, 0, 1, 1));
+        tree = tree.add(1, Rectangle.create(0, 0, 1, 1));
         double x1 = 2.0000000001;
         System.out.println((float) x1);
-        tree = tree.add(2, Geometries.rectangle(x1, 2, 3, 3));
-        assertEquals(0, Iterables.size(tree.search(Geometries.rectangle((float) x1, 2.0, (float) x1, 2.0))));
-        assertEquals(1, Iterables.size(tree.search(Geometries.rectangle(x1, 2.0, x1, 2.0))));
+        tree = tree.add(2, Rectangle.create(x1, 2, 3, 3));
+        assertEquals(0, Iterables.size(tree.search(Rectangle.create((float) x1, 2.0, (float) x1, 2.0))));
+        assertEquals(1, Iterables.size(tree.search(Rectangle.create(x1, 2.0, x1, 2.0))));
     }
 
     private static final MathContext FLOOR = new MathContext(7, RoundingMode.FLOOR);

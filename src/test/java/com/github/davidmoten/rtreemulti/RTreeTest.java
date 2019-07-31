@@ -1,8 +1,7 @@
 package com.github.davidmoten.rtreemulti;
 
 import static com.github.davidmoten.rtreemulti.Entries.entry;
-import static com.github.davidmoten.rtreemulti.geometry.Geometries.point;
-import static com.github.davidmoten.rtreemulti.geometry.Geometries.rectangle;
+import static com.github.davidmoten.rtreemulti.geometry.Point.point;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -31,7 +30,6 @@ import org.junit.runners.MethodSorters;
 
 import com.github.davidmoten.guavamini.Lists;
 import com.github.davidmoten.guavamini.Sets;
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Geometry;
 import com.github.davidmoten.rtreemulti.geometry.HasGeometry;
 import com.github.davidmoten.rtreemulti.geometry.Point;
@@ -158,7 +156,7 @@ public class RTreeTest {
         assertEquals(n, Iterables.size(tree.entries()));
 
         long t = System.currentTimeMillis();
-        Entry<Object, Geometry> entry = tree.search(rectangle(0, 0, 500, 500)).iterator().next();
+        Entry<Object, Geometry> entry = tree.search(Rectangle.create(0, 0, 500, 500)).iterator().next();
         long diff = System.currentTimeMillis() - t;
         System.out.println("found " + entry);
         System.out.println("time to get nearest with " + n + " entries=" + diff);
@@ -399,7 +397,7 @@ public class RTreeTest {
 
     private void testBuiltTree(RTree<Object, Point> tree) {
         for (int i = 1; i <= 1000; i++) {
-            tree = tree.add(i, Geometries.point(i, i));
+            tree = tree.add(i, Point.point(i, i));
         }
         assertEquals(1000, Iterables.size(tree.entries()));
     }
@@ -481,11 +479,6 @@ public class RTreeTest {
     }
 
     @Test
-    public void testSearchOnGreekDataUsingFlatBuffersFactory() {
-
-    }
-
-    @Test
     public void testVisualizerWithGreekData() {
         List<Entry<Object, Point>> entries = GreekEarthquakes.entriesList(Precision.DOUBLE);
         int maxChildren = 8;
@@ -494,7 +487,7 @@ public class RTreeTest {
         tree.visualize(2000, 2000).save("target/greek.png");
 
         // do search
-        long found = Iterables.size(tree.search(Geometries.rectangle(40, 27.0, 40.5, 27.5)));
+        long found = Iterables.size(tree.search(Rectangle.create(40, 27.0, 40.5, 27.5)));
         System.out.println("found=" + found);
         assertEquals(22, found);
 
@@ -585,7 +578,7 @@ public class RTreeTest {
     public void testAddOverload() {
         @SuppressWarnings("unchecked")
         RTree<Object, Geometry> tree = (RTree<Object, Geometry>) (RTree<?, ?>) create(3, 0);
-        tree = tree.add(123, Geometries.point(1, 2));
+        tree = tree.add(123, Point.point(1, 2));
         assertEquals(1, Iterables.size(tree.entries()));
     }
 
@@ -593,13 +586,13 @@ public class RTreeTest {
     public void testDeleteOverload() {
         @SuppressWarnings("unchecked")
         RTree<Object, Geometry> tree = (RTree<Object, Geometry>) (RTree<?, ?>) create(3, 0);
-        tree = tree.add(123, Geometries.point(1, 2)).delete(123, Geometries.point(1, 2));
+        tree = tree.add(123, Point.point(1, 2)).delete(123, Point.point(1, 2));
         assertTrue(Iterables.isEmpty(tree.entries()));
     }
 
     @Test
     public void testStandardRTreeSearch() {
-        Rectangle r = rectangle(13.0, 23.0, 50.0, 80.0);
+        Rectangle r = Rectangle.create(13.0, 23.0, 50.0, 80.0);
         Point[] points = { point(59.0, 91.0), point(86.0, 14.0), point(36.0, 60.0),
                 point(57.0, 36.0), point(14.0, 37.0) };
 
@@ -619,7 +612,7 @@ public class RTreeTest {
 
     @Test
     public void testStandardRTreeSearch2() {
-        Rectangle r = rectangle(10.0, 10.0, 50.0, 50.0);
+        Rectangle r = Rectangle.create(10.0, 10.0, 50.0, 50.0);
         Point[] points = { point(28.0, 19.0), point(29.0, 4.0), point(10.0, 63.0),
                 point(34.0, 85.0), point(62.0, 45.0) };
 
@@ -643,10 +636,10 @@ public class RTreeTest {
         RTree<Integer, Geometry> tree1 = RTree.create();
         RTree<Integer, Geometry> tree2 = RTree.star().create();
 
-        Rectangle[] testRects = { rectangle(0, 0, 0, 0), rectangle(0, 0, 100, 100),
-                rectangle(0, 0, 10, 10), rectangle(0.12, 0.25, 50.356, 50.756),
-                rectangle(1, 0.252, 50, 69.23), rectangle(13.12, 23.123, 50.45, 80.9),
-                rectangle(10, 10, 50, 50) };
+        Rectangle[] testRects = { Rectangle.create(0, 0, 0, 0), Rectangle.create(0, 0, 100, 100),
+                Rectangle.create(0, 0, 10, 10), Rectangle.create(0.12, 0.25, 50.356, 50.756),
+                Rectangle.create(1, 0.252, 50, 69.23), Rectangle.create(13.12, 23.123, 50.45, 80.9),
+                Rectangle.create(10, 10, 50, 50) };
 
         List<Entry<Integer, Geometry>> entries = new ArrayList<Entry<Integer, Geometry>>(10000);
         for (int i = 1; i <= 10000; i++) {
@@ -713,7 +706,7 @@ public class RTreeTest {
     public void testRTreeRootMbrWhenRTreeNonEmpty() {
         Optional<Rectangle> r = RTree.<Integer, Point>create().add(1, point(1, 1))
                 .add(2, point(2, 2)).mbr();
-        assertEquals(Geometries.rectangle(1, 1, 2, 2), r.get());
+        assertEquals(Rectangle.create(1, 1, 2, 2), r.get());
     }
 
     private static <T> Func1<Entry<T, ?>, T> toValue() {
@@ -732,7 +725,7 @@ public class RTreeTest {
 
         double randomY = Math.round(Math.random() * 100);
 
-        return Geometries.point(randomX, randomY);
+        return Point.point(randomX, randomY);
 
     }
 
@@ -745,15 +738,15 @@ public class RTreeTest {
     }
 
     private static Rectangle r(int n) {
-        return rectangle(n, n, n + 1, n + 1);
+        return Rectangle.create(n, n, n + 1, n + 1);
     }
 
     private static Rectangle r(double n, double m) {
-        return rectangle(n, m, n + 1, m + 1);
+        return Rectangle.create(n, m, n + 1, m + 1);
     }
 
     private static Rectangle r(float n, float m) {
-        return rectangle(n, m, n + 1, m + 1);
+        return Rectangle.create(n, m, n + 1, m + 1);
     }
 
     static Rectangle random(Precision precision) {
@@ -768,7 +761,7 @@ public class RTreeTest {
         Iterable<Entry<Object, Point>> entriesDouble = GreekEarthquakes.entries(Precision.DOUBLE);
         RTree<Object, Point> t = RTree.maxChildren(4).<Object, Point>create().add(entriesDouble); //
         assertEquals(38377, Iterables.size(t.entries()));
-        Rectangle rectangle = Geometries.rectangle(40, 27.0, 40.5, 27.5);
+        Rectangle rectangle = Rectangle.create(40, 27.0, 40.5, 27.5);
         long count = Stream.from(t.entries()).filter(x -> rectangle.intersects(x.geometry()))
                 .count().get();
         assertEquals(22, count);
@@ -806,24 +799,20 @@ public class RTreeTest {
         int n = 1000;
         int max = 1000;
         for (int i = 0; i < 10; i++) {
-            List<Integer> list = r.doubles(3 * n).mapToObj(x -> (int) Math.round(x * max))
-                    .collect(Collectors.toList());
-            RTree<Integer, Point> tree = RTree.dimensions(3).star().create();
             List<Entry<Integer, Point>> entries = Stream //
-                    .from(list) //
+                    .from(r.doubles(3 * n).mapToObj(x -> (int) Math.round(x * max))
+                            .collect(Collectors.toList())) //
                     .buffer(3) //
-                    .map(x -> Entries.entry(1, Geometries.point(x.get(0), x.get(1), x.get(2))))
+                    .map(x -> Entries.entry(1, Point.point(x.get(0), x.get(1), x.get(2))))
                     .toList().get();
-            tree = tree.add(entries);
+            RTree<Integer, Point> tree = RTree.dimensions(3).star().create(entries);
             // do 1000 searches of a random rectangle within domain
             for (int j = 0; j < 1000; j++) {
                 List<Integer> ints = r.doubles().limit(6).mapToObj(x -> (int) Math.round(x * max))
                         .collect(Collectors.toList());
                 List<Entry<Integer, Point>> points = Stream.from(ints).buffer(3)
-                        .map(x -> Entries.entry(1, Geometries.point(x.get(0), x.get(1), x.get(2))))
+                        .map(x -> Entries.entry(1, Point.point(x.get(0), x.get(1), x.get(2))))
                         .toList().get();
-                
-
             }
         }
     }

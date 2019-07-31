@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.davidmoten.rtreemulti.Entries;
-import com.github.davidmoten.rtreemulti.Entry;
-import com.github.davidmoten.rtreemulti.geometry.Geometries;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
 
 public class Utilities {
@@ -25,9 +22,9 @@ public class Utilities {
                 double y = Double.parseDouble(items[1]);
                 Entry<Object, Rectangle> entry;
                 if (precision == Precision.DOUBLE)
-                    entry = Entries.entry(new Object(), Geometries.rectangle(x, y, x + 1, y + 1));
+                    entry = Entries.entry(new Object(), Rectangle.create(x, y, x + 1, y + 1));
                 else
-                    entry = Entries.entry(new Object(), Geometries.rectangle((float) x, (float) y,
+                    entry = Entries.entry(new Object(), Rectangle.create((float) x, (float) y,
                             (float) x + 1, (float) y + 1));
                 list.add(entry);
             }
