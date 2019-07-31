@@ -13,7 +13,7 @@ import com.github.davidmoten.rtree2.internal.LeafDefault;
 
 public class LeafTest {
 
-    private static Context<Object, Rectangle> context = new Context<Object, Rectangle>(2, 4,
+    private static Context<Object, Rectangle> context = new Context<Object, Rectangle>(2, 2, 4,
             new SelectorMinimalAreaIncrease(), new SplitterQuadratic(),
             Factories.<Object, Rectangle>defaultFactory());
 

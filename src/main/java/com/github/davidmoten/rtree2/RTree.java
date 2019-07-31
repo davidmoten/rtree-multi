@@ -91,7 +91,7 @@ public final class RTree<T, S extends Geometry> {
     }
 
     /**
-     * Returns a new Builder instance for {@link RTree}. Defaults to
+     * Returns a new Builder instance for a 2 dimensional {@link RTree}. Defaults to
      * maxChildren=128, minChildren=64, splitter=QuadraticSplitter.
      * 
      * @param <T>
@@ -100,8 +100,24 @@ public final class RTree<T, S extends Geometry> {
      *            the geometry type of the entries in the tree
      * @return a new RTree instance
      */
-    public static <T, S extends Geometry> RTree<T, S> create(int dimensions) {
+    public static <T, S extends Geometry> RTree<T, S> create() {
         return new Builder().create();
+    }
+    
+    /**
+     * Returns a new Builder instance for {@link RTree}. Defaults to
+     * maxChildren=128, minChildren=64, splitter=QuadraticSplitter.
+     * 
+     * @param dimensions 
+     *            the number of dimensions
+     * @param <T>
+     *            the value type of the entries in the tree
+     * @param <S>
+     *            the geometry type of the entries in the tree
+     * @return a new RTree instance
+     */
+    public static <T, S extends Geometry> RTree<T, S> create(int dimensions) {
+        return new Builder().dimensions(dimensions).create();
     }
 
     /**
