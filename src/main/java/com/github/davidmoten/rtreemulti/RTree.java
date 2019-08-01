@@ -917,7 +917,7 @@ public final class RTree<T, S extends Geometry> {
         s.append("mbr=");
         s.append(node.geometry());
         s.append('\n');
-        if (node.isLeaf()) {
+        if (!node.isLeaf()) {
             NonLeaf<T, S> n = (NonLeaf<T, S>) node;
             for (int i = 0; i < n.count(); i++) {
                 Node<T, S> child = n.child(i);
