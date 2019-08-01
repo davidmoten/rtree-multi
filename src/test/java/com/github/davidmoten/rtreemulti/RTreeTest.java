@@ -115,6 +115,12 @@ public class RTreeTest {
         RTree<Object, Rectangle> tree = RTree.dimensions(2).create(Arrays.asList(e(1)));
         assertFalse(tree.isEmpty());
     }
+    
+    @Test
+    public void testCreateWithNumberOfDimensions() {
+        RTree<Object, Rectangle> tree = RTree.create(5);
+        assertEquals(5, tree.dimensions());
+    }
 
     @Test
     public void testBulkLoadingEntryCount() {
@@ -131,7 +137,7 @@ public class RTreeTest {
     @Test
     public void testSearchOnOneItemOnBulkLoadingRTree() {
         Entry<Object, Rectangle> entry = e(1);
-        RTree<Object, Rectangle> tree = RTree.dimensions(2).create(Arrays.asList(entry));
+        RTree<Object, Rectangle> tree = RTree.dimensions(2).loadingFactor(0.8).factory(Factory.defaultFactory()).create(Arrays.asList(entry));
         assertEquals(Arrays.asList(entry), Observable.from(tree.search(r(1))).toList().toBlocking().single());
     }
 

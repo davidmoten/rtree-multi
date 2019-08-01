@@ -68,10 +68,6 @@ public final class RTree<T, S extends Geometry> {
         this.context = context;
     }
 
-    private RTree() {
-        this(Optional.<Node<T, S>>empty(), 0, null);
-    }
-
     /**
      * Constructor.
      * 
@@ -82,11 +78,6 @@ public final class RTree<T, S extends Geometry> {
      */
     private RTree(Node<T, S> root, int size, Context<T, S> context) {
         this(of(root), size, context);
-    }
-
-    static <T, S extends Geometry> RTree<T, S> create(Optional<? extends Node<T, S>> root, int size,
-            Context<T, S> context) {
-        return new RTree<T, S>(root, size, context);
     }
 
     /**
@@ -221,13 +212,12 @@ public final class RTree<T, S extends Geometry> {
         private Optional<Integer> minChildren = empty();
         private Splitter splitter = new SplitterQuadratic();
         private Selector selector = new SelectorMinimalVolumeIncrease();
-        private double loadingFactor;
+        private double loadingFactor = DEFAULT_LOADING_FACTOR;
         private boolean star = false;
         private Factory<Object, Geometry> factory = Factory.defaultFactory();
         private int dimensions = 2;
 
         private Builder() {
-            loadingFactor = DEFAULT_LOADING_FACTOR;
         }
         
         public Builder dimensions(int dimensions) {
@@ -237,7 +227,7 @@ public final class RTree<T, S extends Geometry> {
         }
 
         /**
-         * The factor is used as the fill ratio during bulk loading.
+         * The factor used as the fill ratio during bulk loading. Default is 0.7.
          * 
          * @param factor
          *            loading factor
