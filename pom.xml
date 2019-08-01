@@ -40,6 +40,8 @@
         <jmh.version>1.21</jmh.version>
         <exec.version>1.6.0</exec.version>
 
+        <iteration.seconds>2</iteration.seconds>
+
     </properties>
 
     <licenses>
@@ -178,9 +180,9 @@
                                         <argument>org.openjdk.jmh.Main</argument>
                                         <!-- -h for help -->
                                         <argument>-w</argument>
-                                        <argument>2</argument>
+                                        <argument>${iteration.seconds}</argument>
                                         <argument>-r</argument>
-                                        <argument>2</argument>
+                                        <argument>${iteration.seconds}</argument>
                                         <argument>-f</argument>
                                         <argument>1</argument>
                                         <argument>-i</argument>
