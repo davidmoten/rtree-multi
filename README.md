@@ -38,7 +38,7 @@ Features
 * R*-tree performs ? searches/second returning 22 entries from a tree of 38,377 Greek earthquake locations on i7-920@2.67Ghz (maxChildren=4, minChildren=1). Insert at ? entries per second.
 * requires java 1.8 or later
 
-#2 dimensions
+# 2 dimensions
 Number of points = 1000, max children per node 8: 
 
 | Quadratic split | R*-tree split |
