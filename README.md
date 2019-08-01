@@ -19,7 +19,7 @@ it is in [Leaf.java](src/main/java/com/github/davidmoten/rtree-multi/internal/Le
 
 Iterator support requires a bookmark to be kept for a position in the tree and returned to later to continue traversal. An immutable stack containing the node and child index of the path nodes came to the rescue here and recursion was abandoned in favour of looping to prevent stack overflow (unfortunately java doesn't support tail recursion!).
 
-Maven site reports are [here](http://davidmoten.github.io/rtree-multi/index.html) including [javadoc](http://davidmoten.github.io/rtree-multi/apidocs/index.html).
+Maven site reports are [here](https://davidmoten.github.io/rtree-multi/index.html) including [javadoc](https://davidmoten.github.io/rtree-multi/apidocs/index.html).
 
 Features
 ------------
