@@ -300,14 +300,24 @@ The *Greek* data referred to in the benchmarks is a collection of some 38,377 en
 These were run on i7-920 @2.67GHz with *rtree* version 0.9-RC1:
 
 ```
+# JMH version: 1.21
+# VM version: JDK 1.8.0_201, Java HotSpot(TM) 64-Bit Server VM, 25.201-b09
+# VM invoker: /usr/lib/jvm/java-8-oracle/jre/bin/java
+# VM options: -Xmx512m
+# Warmup: 3 iterations, 10 s each
+# Measurement: 10 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+
 Benchmark                                                        Mode  Cnt        Score       Error  Units
-BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren004       thrpt   10   913108.869 ± 29687.778  ops/s
-BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren010       thrpt   10   999499.609 ± 21608.024  ops/s
-BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren032       thrpt   10   312139.221 ±  4877.127  ops/s
-BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren128       thrpt   10  1235469.015 ±  5893.508  ops/s
-BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren004  thrpt   10   335305.834 ± 20542.453  ops/s
-BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren010  thrpt   10   198969.399 ± 13421.732  ops/s
-BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren032  thrpt   10   313097.040 ± 12469.747  ops/s
-BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren128  thrpt   10   244395.989 ±   727.745  ops/s
-BenchmarksRTree.searchNearestGreek                              thrpt   10     3544.125 ±    15.394  ops/s
+BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren004       thrpt   10  1021844.129 ± 16977.542  ops/s
+BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren010       thrpt   10   931789.301 ± 33477.764  ops/s
+BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren032       thrpt   10   304816.886 ±  5674.364  ops/s
+BenchmarksRTree.rStarTreeSearchOf1000PointsMaxChildren128       thrpt   10   606188.199 ±  7553.533  ops/s
+BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren004  thrpt   10   527595.512 ± 34400.389  ops/s
+BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren010  thrpt   10   194793.663 ±  5385.855  ops/s
+BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren032  thrpt   10   297597.166 ± 40175.027  ops/s
+BenchmarksRTree.rStarTreeSearchOfGreekDataPointsMaxChildren128  thrpt   10   221605.832 ±  9332.555  ops/s
+BenchmarksRTree.searchNearestGreek                              thrpt   10     3534.733 ±   177.370  ops/s
 ```
