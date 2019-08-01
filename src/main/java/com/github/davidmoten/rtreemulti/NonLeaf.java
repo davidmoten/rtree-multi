@@ -16,5 +16,9 @@ public interface NonLeaf<T, S extends Geometry> extends Node<T, S> {
      * @return list of children nodes
      */
     List<Node<T, S>> children();
+    
+    default boolean isLeaf() {
+        return false;
+    }
 
 }

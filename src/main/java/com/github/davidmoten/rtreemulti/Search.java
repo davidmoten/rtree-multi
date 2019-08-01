@@ -78,7 +78,7 @@ final class Search {
                 if (!np.hasRemaining()) {
                     // handle after last in node
                     searchAfterLastInNode();
-                } else if (np.node() instanceof NonLeaf) {
+                } else if (!np.node().isLeaf()) {
                     // handle non-leaf
                     searchNonLeaf(np);
                 } else {
