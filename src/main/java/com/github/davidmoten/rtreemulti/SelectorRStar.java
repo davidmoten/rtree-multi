@@ -15,7 +15,7 @@ public final class SelectorRStar implements Selector {
 
     @Override
     public <T, S extends Geometry> Node<T, S> select(Geometry g, List<? extends Node<T, S>> nodes) {
-        boolean leafNodes = nodes.get(0) instanceof Leaf;
+        boolean leafNodes = nodes.get(0).isLeaf();
         if (leafNodes)
             return overlapVolumeSelector.select(g, nodes);
         else

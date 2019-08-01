@@ -42,7 +42,7 @@ public final class Visualizer {
     }
 
     private static <R, S extends Geometry> int calculateDepth(Node<R, S> node, int depth) {
-        if (node instanceof Leaf)
+        if (node.isLeaf())
             return depth + 1;
         else
             return calculateDepth(((NonLeaf<R, S>) node).child(0), depth + 1);
@@ -79,7 +79,7 @@ public final class Visualizer {
             int depth) {
         final List<RectangleDepth> list = new ArrayList<RectangleDepth>();
         list.add(new RectangleDepth(node.geometry().mbr(), depth));
-        if (node instanceof Leaf) {
+        if (node.isLeaf()) {
             final Leaf<T, S> leaf = (Leaf<T, S>) node;
             for (final Entry<T, S> entry : leaf.entries()) {
                 list.add(new RectangleDepth(entry.geometry().mbr(), depth + 2));

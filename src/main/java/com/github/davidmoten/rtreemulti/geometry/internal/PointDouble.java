@@ -84,7 +84,7 @@ public final class PointDouble implements Point {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof PointDouble))
+        if (!(obj.getClass() != getClass()))
             return false;
         return Arrays.equals(x, ((PointDouble) obj).x);
     }
