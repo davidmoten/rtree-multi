@@ -70,6 +70,15 @@ public class RTreeTest {
         tree = tree.add(entry);
         assertEquals(Arrays.asList(entry), Observable.from(tree.search(r(1))).toList().toBlocking().single());
     }
+    
+    @Test
+    public void testSearchOnOneItemUsingIntersectsOverload() {
+        RTree<Object, Rectangle> tree = RTree.create();
+        Entry<Object, Rectangle> entry = e(1);
+        tree = tree.add(entry);
+        assertEquals(Arrays.asList(entry), Observable.from(tree.search(r(1), (g, o) -> g.geometry().intersects(r(1))))
+                .toList().toBlocking().single());
+    }
 
     @Test
     public void testTreeWithOneItemIsNotEmpty() {
