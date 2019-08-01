@@ -56,4 +56,9 @@ public final class LeafDefault<T, S extends Geometry> implements Leaf<T, S> {
         return entries.get(i);
     }
 
+    @Override
+    public String toString() {
+        return "LeafDefault [mbr=" + mbr + ", entries=" + entries + "]";
+    }
+
 }

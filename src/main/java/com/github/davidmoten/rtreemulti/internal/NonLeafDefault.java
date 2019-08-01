@@ -58,4 +58,10 @@ public final class NonLeafDefault<T, S extends Geometry> implements NonLeaf<T, S
     public List<Node<T, S>> children() {
         return (List<Node<T, S>>) children;
     }
+
+    @Override
+    public String toString() {
+        return "NonLeafDefault [mbr=" + mbr + ", children=" + children + "]";
+    }
+    
 }

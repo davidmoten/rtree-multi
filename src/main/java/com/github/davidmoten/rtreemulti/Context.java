@@ -35,9 +35,9 @@ public final class Context<T, S extends Geometry> {
             Factory<T, S> factory) {
         Preconditions.checkNotNull(splitter);
         Preconditions.checkNotNull(selector);
-        Preconditions.checkArgument(maxChildren > 2);
-        Preconditions.checkArgument(minChildren >= 1);
-        Preconditions.checkArgument(minChildren < maxChildren);
+        Preconditions.checkArgument(maxChildren > 2, "maxChildren must be greater than 2");
+        Preconditions.checkArgument(minChildren >= 1, "minChildren must be greater than 0");
+        Preconditions.checkArgument(minChildren < maxChildren, "minChildren must be less than maxChildren");
         Preconditions.checkNotNull(factory);
         Preconditions.checkArgument(dimensions > 1);
         this.dimensions = dimensions;

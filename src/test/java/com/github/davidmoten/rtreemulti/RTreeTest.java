@@ -757,15 +757,17 @@ public class RTreeTest {
 
     @Test
     public void testVisitor() {
-        List<Entry<Object, Point>> entries = Stream.from(GreekEarthquakes.entries(Precision.DOUBLE)).take(3).toList()
+        List<Entry<Object, Point>> entries = Stream //
+                .from(GreekEarthquakes.entries(Precision.DOUBLE)) //
+                .take(6) //
+                .toList() //
                 .get();
-        RTree<Object, Point> t = RTree.maxChildren(4).<Object, Point>create().add(entries); //
+        RTree<Object, Point> t = RTree.maxChildren(3).<Object, Point>create().add(entries); //
         t.visit(new Visitor<Object, Point>() {
 
             @Override
             public void leaf(Leaf<Object, Point> node) {
-                System.out.println("LEAF mbr=" + node.geometry().mbr() + ", entries=" + node.entries().size() + ": "
-                        + node.entries());
+                System.out.println(node);
 
             }
 
