@@ -90,4 +90,16 @@ public class PointTest {
         Point p = Point.create(1, 2);
         assertTrue(p.contains(1, 2));
     }
+    
+    @Test
+    public void testVolumeIsZero() {
+        Point p = Point.create(1, 2);
+        assertEquals(0, p.volume(), PRECISION);
+    }
+    
+    @Test
+    public void testSurfaceAreaIsZero() {
+        Point p = Point.create(1, 2);
+        assertEquals(0, p.surfaceArea(), PRECISION);
+    }
 }
