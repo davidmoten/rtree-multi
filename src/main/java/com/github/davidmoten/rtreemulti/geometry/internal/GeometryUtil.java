@@ -1,6 +1,5 @@
 package com.github.davidmoten.rtreemulti.geometry.internal;
 
-import com.github.davidmoten.guavamini.Preconditions;
 import com.github.davidmoten.rtreemulti.geometry.Rectangle;
 
 public final class GeometryUtil {
