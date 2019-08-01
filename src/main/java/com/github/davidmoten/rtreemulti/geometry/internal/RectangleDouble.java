@@ -71,8 +71,8 @@ public final class RectangleDouble implements Rectangle {
     @Override
     public int hashCode() {
         int result = 1;
-        result = 31 * result + (mins == null ? 0 : Arrays.hashCode(mins));
-        result = 31 * result + (maxes == null ? 0 : Arrays.hashCode(maxes));
+        result = 31 * result + Arrays.hashCode(mins);
+        result = 31 * result + Arrays.hashCode(maxes);
         return result;
     }
 

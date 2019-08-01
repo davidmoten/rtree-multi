@@ -39,7 +39,7 @@ public final class Context<T, S extends Geometry> {
         Preconditions.checkArgument(minChildren >= 1, "minChildren must be greater than 0");
         Preconditions.checkArgument(minChildren < maxChildren, "minChildren must be less than maxChildren");
         Preconditions.checkNotNull(factory);
-        Preconditions.checkArgument(dimensions > 1);
+        Preconditions.checkArgument(dimensions > 1, "dimensions must be greater than 1");
         this.dimensions = dimensions;
         this.selector = selector;
         this.maxChildren = maxChildren;

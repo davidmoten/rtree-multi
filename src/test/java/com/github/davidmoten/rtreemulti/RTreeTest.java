@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -755,6 +756,17 @@ public class RTreeTest {
                 .assertCompleted();
     }
 
+    @Test(expected = NoSuchElementException.class)
+    public void testSearchNoSuchElements() {
+        RTree<Object, Point> tree = RTree.<Object, Point>create().add(1, Point.create(3, 4));
+        Iterator<Entry<Object, Point>> it = tree. //
+                search(Point.create(3, 4)) //
+                .iterator();
+        it.next();
+        it.next();
+    }
+    
+    
     @Test
     public void testVisitor() {
         List<Entry<Object, Point>> entries = Stream //

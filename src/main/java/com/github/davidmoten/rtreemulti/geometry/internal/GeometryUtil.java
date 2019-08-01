@@ -44,9 +44,6 @@ public final class GeometryUtil {
 
     public static boolean intersects(double[] mins, double[] maxes, double [] minsOther, double[] maxesOther) {
         for (int i = 0;i < mins.length;i ++) {
-            //TODO remove for perf
-            Preconditions.checkArgument(mins[i] <= maxes[i]);
-            Preconditions.checkArgument(minsOther[i] <= maxesOther[i]);
             if (mins[i] > maxesOther[i] || maxes[i] < minsOther[i]) {
                 return false;
             }
