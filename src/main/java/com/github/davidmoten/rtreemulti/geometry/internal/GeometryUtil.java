@@ -9,40 +9,13 @@ public final class GeometryUtil {
         // prevent instantiation
     }
 
-    public static double distanceSquared(double x1, double y1, double x2, double y2) {
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        return dx * dx + dy * dy;
-    }
-
     public static double max(double a, double b) {
         if (a < b)
             return b;
         else
             return a;
     }
-
-    public static float max(float a, float b) {
-        if (a < b)
-            return b;
-        else
-            return a;
-    }
-
-    public static double min(double a, double b) {
-        if (a < b)
-            return a;
-        else
-            return b;
-    }
-
-    public static float min(float a, float b) {
-        if (a < b)
-            return a;
-        else
-            return b;
-    }
-
+    
     public static double distance(double x[], Rectangle r) {
         return distance(x, r.mins(), r.maxes());
     }
