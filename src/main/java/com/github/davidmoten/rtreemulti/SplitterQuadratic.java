@@ -18,6 +18,12 @@ import com.github.davidmoten.rtreemulti.internal.util.Pair;
 
 public final class SplitterQuadratic implements Splitter {
 
+    public static final SplitterQuadratic INSTANCE = new SplitterQuadratic();
+    
+    private SplitterQuadratic() {
+        // prevent instantiation
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public <T extends HasGeometry> ListPair<T> split(List<T> items, int minSize) {

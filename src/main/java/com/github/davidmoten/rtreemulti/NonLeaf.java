@@ -20,5 +20,5 @@ public interface NonLeaf<T, S extends Geometry> extends Node<T, S> {
     default boolean isLeaf() {
         return false;
     }
-
+    
 }

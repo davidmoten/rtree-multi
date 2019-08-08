@@ -62,7 +62,7 @@ public final class RTree<T, S extends Geometry> {
      * @param context
      *            options for the R-tree
      */
-    private RTree(Optional<? extends Node<T, S>> root, int size, Context<T, S> context) {
+    public RTree(Optional<? extends Node<T, S>> root, int size, Context<T, S> context) {
         this.root = root;
         this.size = size;
         this.context = context;
@@ -210,8 +210,8 @@ public final class RTree<T, S extends Geometry> {
         private static final double DEFAULT_LOADING_FACTOR = 0.7;
         private Optional<Integer> maxChildren = empty();
         private Optional<Integer> minChildren = empty();
-        private Splitter splitter = new SplitterQuadratic();
-        private Selector selector = new SelectorMinimalVolumeIncrease();
+        private Splitter splitter = SplitterQuadratic.INSTANCE;
+        private Selector selector = SelectorMinimalVolumeIncrease.INSTANCE;
         private double loadingFactor = DEFAULT_LOADING_FACTOR;
         private boolean star = false;
         private Factory<Object, Geometry> factory = Factory.defaultFactory();
@@ -296,8 +296,8 @@ public final class RTree<T, S extends Geometry> {
          * @return builder
          */
         public Builder star() {
-            selector = new SelectorRStar();
-            splitter = new SplitterRStar();
+            selector = SelectorRStar.INSTANCE;
+            splitter = SplitterRStar.INSTANCE;
             star = true;
             return this;
         }

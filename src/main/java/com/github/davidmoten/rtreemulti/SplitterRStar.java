@@ -12,9 +12,11 @@ import com.github.davidmoten.rtreemulti.geometry.ListPair;
 
 public final class SplitterRStar implements Splitter {
 
+    public static final SplitterRStar INSTANCE = new SplitterRStar();
+
     private final Comparator<ListPair<?>> comparator;
 
-    public SplitterRStar() {
+    private SplitterRStar() {
         this.comparator = new Comparator<ListPair<?>>() {
 
             @Override

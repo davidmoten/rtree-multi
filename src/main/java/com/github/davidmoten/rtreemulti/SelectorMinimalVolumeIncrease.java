@@ -13,6 +13,11 @@ import com.github.davidmoten.rtreemulti.internal.Comparators;
  */
 public final class SelectorMinimalVolumeIncrease implements Selector {
 
+    public static final SelectorMinimalVolumeIncrease INSTANCE = new SelectorMinimalVolumeIncrease();
+
+    private SelectorMinimalVolumeIncrease() {
+    }
+
     @Override
     public <T, S extends Geometry> Node<T, S> select(Geometry g, List<? extends Node<T, S>> nodes) {
         return min(nodes, Comparators.volumeIncreaseThenVolumeComparator(g.mbr()));

@@ -9,17 +9,20 @@ import com.github.davidmoten.rtreemulti.geometry.Geometry;
  * selector for non-leaf nodes.
  */
 public final class SelectorRStar implements Selector {
+    
+    public static final SelectorRStar INSTANCE = new SelectorRStar();
 
-    private static Selector overlapVolumeSelector = new SelectorMinimalOverlapVolume();
-    private static Selector volumeIncreaseSelector = new SelectorMinimalVolumeIncrease();
 
+    private SelectorRStar() {
+    }
+    
     @Override
     public <T, S extends Geometry> Node<T, S> select(Geometry g, List<? extends Node<T, S>> nodes) {
         boolean leafNodes = nodes.get(0).isLeaf();
         if (leafNodes)
-            return overlapVolumeSelector.select(g, nodes);
+            return SelectorMinimalOverlapVolume.INSTANCE.select(g, nodes);
         else
-            return volumeIncreaseSelector.select(g, nodes);
+            return SelectorMinimalVolumeIncrease.INSTANCE.select(g, nodes);
     }
 
 }

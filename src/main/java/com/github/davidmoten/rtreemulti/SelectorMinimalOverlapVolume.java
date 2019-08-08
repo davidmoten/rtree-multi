@@ -8,6 +8,11 @@ import com.github.davidmoten.rtreemulti.geometry.Geometry;
 import com.github.davidmoten.rtreemulti.internal.Comparators;
 
 public final class SelectorMinimalOverlapVolume implements Selector {
+    
+    public static final SelectorMinimalOverlapVolume INSTANCE = new SelectorMinimalOverlapVolume();
+    
+    private SelectorMinimalOverlapVolume() {
+    }
 
     @Override
     public <T, S extends Geometry> Node<T, S> select(Geometry g, List<? extends Node<T, S>> nodes) {
