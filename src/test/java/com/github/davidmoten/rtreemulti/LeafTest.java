@@ -13,7 +13,7 @@ import com.github.davidmoten.rtreemulti.internal.LeafDefault;
 public class LeafTest {
 
     private static Context<Object, Rectangle> context = new Context<Object, Rectangle>(2, 2, 4,
-            new SelectorMinimalVolumeIncrease(), new SplitterQuadratic(),
+            SelectorMinimalVolumeIncrease.INSTANCE, SplitterQuadratic.INSTANCE,
             Factory.<Object, Rectangle>defaultFactory());
 
     @Test(expected = IllegalArgumentException.class)

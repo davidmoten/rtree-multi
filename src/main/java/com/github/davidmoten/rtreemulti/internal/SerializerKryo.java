@@ -38,8 +38,8 @@ public class SerializerKryo<T, S extends Geometry>
         return k.readObject(new Input(in), RTree.class);
     }
 
-    private static Kryo createKryo() {
-        Kryo k = new Kryo();
+   private static Kryo createKryo() {
+       Kryo k = new Kryo();
         k.register(RTree.class, new Serializer<RTree<Object, Geometry>>() {
 
             @Override

@@ -81,7 +81,7 @@ public class QuadraticSplitterTest {
 
     @Test
     public void testSplit() {
-        final SplitterQuadratic q = new SplitterQuadratic();
+        final SplitterQuadratic q = SplitterQuadratic.INSTANCE;
         final Mbr r1 = r(1);
         final Mbr r2 = r(2);
         final Mbr r3 = r(100);
@@ -93,7 +93,7 @@ public class QuadraticSplitterTest {
 
     @Test
     public void testSplit2() {
-        final SplitterQuadratic q = new SplitterQuadratic();
+        final SplitterQuadratic q = SplitterQuadratic.INSTANCE;
         final Mbr r1 = r(1);
         final Mbr r2 = r(2);
         final Mbr r3 = r(100);
@@ -106,7 +106,7 @@ public class QuadraticSplitterTest {
 
     @Test
     public void testSplit3() {
-        final SplitterQuadratic q = new SplitterQuadratic();
+        final SplitterQuadratic q = SplitterQuadratic.INSTANCE;
         final Mbr r1 = r(1);
         final Mbr r2 = r(2);
         final Mbr r3 = r(100);
@@ -120,7 +120,7 @@ public class QuadraticSplitterTest {
 
     @Test(expected = RuntimeException.class)
     public void testExceptionForSplitEmptyList() {
-        final SplitterQuadratic q = new SplitterQuadratic();
+        final SplitterQuadratic q = SplitterQuadratic.INSTANCE;
         q.split(Collections.<HasGeometry> emptyList(), 3);
     }
 

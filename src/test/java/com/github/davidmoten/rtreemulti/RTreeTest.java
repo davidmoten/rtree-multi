@@ -369,8 +369,8 @@ public class RTreeTest {
 
     @Test
     public void testBuilder1() {
-        RTree<Object, Point> tree = RTree.minChildren(1).maxChildren(4).selector(new SelectorMinimalVolumeIncrease())
-                .splitter(new SplitterQuadratic()).create();
+        RTree<Object, Point> tree = RTree.minChildren(1).maxChildren(4).selector(SelectorMinimalVolumeIncrease.INSTANCE)
+                .splitter(SplitterQuadratic.INSTANCE).create();
         testBuiltTree(tree);
     }
 
@@ -382,22 +382,22 @@ public class RTreeTest {
 
     @Test
     public void testBuilder2() {
-        RTree<Object, Point> tree = RTree.selector(new SelectorMinimalVolumeIncrease()).minChildren(1).maxChildren(4)
-                .splitter(new SplitterQuadratic()).create();
+        RTree<Object, Point> tree = RTree.selector(SelectorMinimalVolumeIncrease.INSTANCE).minChildren(1).maxChildren(4)
+                .splitter(SplitterQuadratic.INSTANCE).create();
         testBuiltTree(tree);
     }
 
     @Test
     public void testBuilder3() {
-        RTree<Object, Point> tree = RTree.maxChildren(4).selector(new SelectorMinimalVolumeIncrease()).minChildren(1)
-                .splitter(new SplitterQuadratic()).create();
+        RTree<Object, Point> tree = RTree.maxChildren(4).selector(SelectorMinimalVolumeIncrease.INSTANCE).minChildren(1)
+                .splitter(SplitterQuadratic.INSTANCE).create();
         testBuiltTree(tree);
     }
 
     @Test
     public void testBuilder4() {
-        RTree<Object, Point> tree = RTree.splitter(new SplitterQuadratic()).maxChildren(4)
-                .selector(new SelectorMinimalVolumeIncrease()).minChildren(1).create();
+        RTree<Object, Point> tree = RTree.splitter(SplitterQuadratic.INSTANCE).maxChildren(4)
+                .selector(SelectorMinimalVolumeIncrease.INSTANCE).minChildren(1).create();
         testBuiltTree(tree);
     }
 
@@ -477,7 +477,7 @@ public class RTreeTest {
 
     @Test(expected = RuntimeException.class)
     public void testSplitterRStarThrowsExceptionOnEmptyList() {
-        SplitterRStar spl = new SplitterRStar();
+        SplitterRStar spl = SplitterRStar.INSTANCE;
         spl.split(Collections.<HasGeometry>emptyList(), 4);
     }
 
