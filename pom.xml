@@ -31,7 +31,7 @@
         <compiler.version>3.8.1</compiler.version>
         <checkstyle.version>3.1.2</checkstyle.version>
         <findbugs.version>3.0.1</findbugs.version>
-        <javadoc.version>3.1.1</javadoc.version>
+        <javadoc.version>3.3.2</javadoc.version>
         <pmd.version>3.12.0</pmd.version>
         <project.info.version>2.7</project.info.version>
         <jxr.version>3.0.0</jxr.version>
