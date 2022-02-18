@@ -1,6 +1,6 @@
 rtree-multi
 =========
-[![Travis CI](https://travis-ci.org/davidmoten/rtree-multi.svg)](https://travis-ci.org/davidmoten/rtree-multi)<br/>
+<a href="https://github.com/davidmoten/kool/actions/workflows/ci.yml"><img src="https://github.com/davidmoten/kool/actions/workflows/ci.yml/badge.svg"/></a><br/>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/rtree-multi/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.davidmoten/rtree-multi)<br/>
 [![codecov](https://codecov.io/gh/davidmoten/rtree-multi/branch/master/graph/badge.svg)](https://codecov.io/gh/davidmoten/rtree-multi)
 
