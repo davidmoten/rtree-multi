@@ -44,7 +44,8 @@ public final class SplitterRStar implements Splitter {
         // the list with the least S is then used to find minimum overlap
 
         List<ListPair<T>> pairs = null;
-        float lowestMarginSum = Float.MAX_VALUE;
+        //float lowestMarginSum = Float.MAX_VALUE;
+        double lowestMarginSum = Double.MAX_VALUE;
         List<T> list = null;
         for (int i = 0; i < items.get(0).geometry().dimensions(); i++) {
             for (boolean isUpper : BOOLEANS) {
@@ -53,8 +54,8 @@ public final class SplitterRStar implements Splitter {
                 }
                 Collections.sort(list, comparator(i, isUpper));
                 List<ListPair<T>> p = getPairs(minSize, list);
-                float marginSum = marginValueSum(p);
-                if (marginSum < lowestMarginSum) {
+                double marginSum = marginValueSum(p);
+                if (marginSum <= lowestMarginSum) {
                     lowestMarginSum = marginSum;
                     pairs = p;
                     // because p uses subViews of list we need to create a new one
@@ -74,8 +75,8 @@ public final class SplitterRStar implements Splitter {
         }
     }
 
-    private static <T extends HasGeometry> float marginValueSum(List<ListPair<T>> list) {
-        float sum = 0;
+    private static <T extends HasGeometry> double marginValueSum(List<ListPair<T>> list) {
+        double sum = 0;
         for (ListPair<T> p : list)
             sum += p.marginSum();
         return sum;
