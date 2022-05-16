@@ -44,8 +44,7 @@ public final class SplitterRStar implements Splitter {
         // the list with the least S is then used to find minimum overlap
 
         List<ListPair<T>> pairs = null;
-        //float lowestMarginSum = Float.MAX_VALUE;
-        double lowestMarginSum = Double.MAX_VALUE;
+        double lowestMarginSum = Double.POSITIVE_INFINITY;
         List<T> list = null;
         for (int i = 0; i < items.get(0).geometry().dimensions(); i++) {
             for (boolean isUpper : BOOLEANS) {
